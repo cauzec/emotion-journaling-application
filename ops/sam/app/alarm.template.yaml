@@ -5,15 +5,15 @@ Description: >-
 
 Metadata:
   AWS::ServerlessRepo::Application:
-    Name: realworld-serverless-application-ops-alarm
+    Name: emotion-journaling-application-ops-alarm
     Description: >-
       This template creates CloudWatch alarms for the backend service.
     Author: AWS Serverless Application Repository
     SpdxLicenseId: Apache-2.0
     Labels: [github, serverless, sam]
-    HomePageUrl: https://github.com/awslabs/realworld-serverless-application
+    HomePageUrl: https://github.com/cauzec/emotion-journaling-application
     SemanticVersion: 1.0.1
-    SourceCodeUrl: https://github.com/awslabs/realworld-serverless-application/tree/1.0.1
+    SourceCodeUrl: https://github.com/cauzec/emotion-journaling-application/tree/main
     LicenseUrl: ../../../LICENSE
     ReadmeUrl: ../../README.md
 
@@ -27,11 +27,11 @@ Resources:
     Type: 'AWS::CloudWatch::Alarm'
     Properties:
       ActionsEnabled: true
-      AlarmDescription: !Sub 'API Gateway API realworld-serverless-application-backend-${Stage} availability is lower than 90%'
+      AlarmDescription: !Sub 'API Gateway API emotion-journaling-application-backend-${Stage} availability is lower than 90%'
       ComparisonOperator: GreaterThanOrEqualToThreshold
       Dimensions:
         - Name: ApiName
-          Value: !Sub realworld-serverless-application-backend-${Stage}
+          Value: !Sub emotion-journaling-application-backend-${Stage}
       EvaluationPeriods: 5
       MetricName: 5XXErrors
       Namespace: AWS/ApiGateway
@@ -45,11 +45,11 @@ Resources:
     Type: 'AWS::CloudWatch::Alarm'
     Properties:
       ActionsEnabled: true
-      AlarmDescription: !Sub 'API Gateway API realworld-serverless-application-backend-${Stage} 4xx Errors are more than 30%'
+      AlarmDescription: !Sub 'API Gateway API emotion-journaling-application-backend-${Stage} 4xx Errors are more than 30%'
       ComparisonOperator: GreaterThanOrEqualToThreshold
       Dimensions:
         - Name: ApiName
-          Value: !Sub realworld-serverless-application-backend-${Stage}
+          Value: !Sub emotion-journaling-application-backend-${Stage}
       EvaluationPeriods: 5
       MetricName: 4XXErrors
       Namespace: AWS/ApiGateway
@@ -63,11 +63,11 @@ Resources:
     Type: 'AWS::CloudWatch::Alarm'
     Properties:
       ActionsEnabled: true
-      AlarmDescription: !Sub 'API Gateway API realworld-serverless-application-backend-${Stage} latency p50 is too high'
+      AlarmDescription: !Sub 'API Gateway API emotion-journaling-application-backend-${Stage} latency p50 is too high'
       ComparisonOperator: GreaterThanOrEqualToThreshold
       Dimensions:
         - Name: ApiName
-          Value: !Sub realworld-serverless-application-backend-${Stage}
+          Value: !Sub emotion-journaling-application-backend-${Stage}
       EvaluationPeriods: 5
       MetricName: Latency
       Namespace: AWS/ApiGateway
@@ -81,11 +81,11 @@ Resources:
     Type: 'AWS::CloudWatch::Alarm'
     Properties:
       ActionsEnabled: true
-      AlarmDescription: !Sub 'API Gateway API realworld-serverless-application-backend-${Stage} latency p90 is too high'
+      AlarmDescription: !Sub 'API Gateway API emotion-journaling-application-backend-${Stage} latency p90 is too high'
       ComparisonOperator: GreaterThanOrEqualToThreshold
       Dimensions:
         - Name: ApiName
-          Value: !Sub realworld-serverless-application-backend-${Stage}
+          Value: !Sub emotion-journaling-application-backend-${Stage}
       EvaluationPeriods: 5
       MetricName: Latency
       Namespace: AWS/ApiGateway
@@ -102,7 +102,7 @@ Resources:
   ApiAvailabilityAlarmName:
     Type: "AWS::SSM::Parameter"
     Properties:
-      Name: !Sub "/applications/apprepo/${Stage}/cloudwatch/ApiAvailabilityAlarmName"
+      Name: !Sub "/therapists/apprepo/${Stage}/cloudwatch/ApiAvailabilityAlarmName"
       Type: "String"
       Value: !Ref ApiAvailability
       Description: "ApiAvailability alarm name"
@@ -110,7 +110,7 @@ Resources:
   Api4xxErrorsAlarmName:
     Type: "AWS::SSM::Parameter"
     Properties:
-      Name: !Sub "/applications/apprepo/${Stage}/cloudwatch/Api4xxErrorsAlarmName"
+      Name: !Sub "/therapists/apprepo/${Stage}/cloudwatch/Api4xxErrorsAlarmName"
       Type: "String"
       Value: !Ref Api4xxErrors
       Description: "Api4xxErrors alarm name"
@@ -118,7 +118,7 @@ Resources:
   ApiLatencyP50AlarmName:
     Type: "AWS::SSM::Parameter"
     Properties:
-      Name: !Sub "/applications/apprepo/${Stage}/cloudwatch/ApiLatencyP50AlarmName"
+      Name: !Sub "/therapists/apprepo/${Stage}/cloudwatch/ApiLatencyP50AlarmName"
       Type: "String"
       Value: !Ref ApiLatencyP50
       Description: "ApiLatencyP50 alarm name"
@@ -126,7 +126,7 @@ Resources:
   ApiLatencyP90AlarmName:
     Type: "AWS::SSM::Parameter"
     Properties:
-      Name: !Sub "/applications/apprepo/${Stage}/cloudwatch/ApiLatencyP90AlarmName"
+      Name: !Sub "/therapists/apprepo/${Stage}/cloudwatch/ApiLatencyP90AlarmName"
       Type: "String"
       Value: !Ref ApiLatencyP90
       Description: "ApiLatencyP90 alarm name"
@@ -134,7 +134,7 @@ Resources:
   AlarmsTopicArn:
     Type: "AWS::SSM::Parameter"
     Properties:
-      Name: !Sub "/applications/apprepo/${Stage}/sns/AlarmsTopicArn"
+      Name: !Sub "/therapists/apprepo/${Stage}/sns/AlarmsTopicArn"
       Type: "String"
       Value: !Ref AlarmsTopic
       Description: "AlarmsTopic arn"
@@ -142,7 +142,7 @@ Resources:
   AlarmsTopicName:
     Type: "AWS::SSM::Parameter"
     Properties:
-      Name: !Sub "/applications/apprepo/${Stage}/sns/AlarmsTopicName"
+      Name: !Sub "/therapists/apprepo/${Stage}/sns/AlarmsTopicName"
       Type: "String"
       Value: !GetAtt AlarmsTopic.TopicName
       Description: "AlarmsTopic name"

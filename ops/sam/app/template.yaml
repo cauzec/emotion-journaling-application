@@ -5,15 +5,15 @@ Description: >-
 
 Metadata:
   AWS::ServerlessRepo::Application:
-    Name: realworld-serverless-application-ops
+    Name: emotion-journaling-application-ops
     Description: >-
       This application creates alarms and dashboards for the backend service.
     Author: AWS Serverless Application Repository
     SpdxLicenseId: Apache-2.0
     Labels: [github, serverless, sam]
-    HomePageUrl: https://github.com/awslabs/realworld-serverless-application
+    HomePageUrl: https://github.com/cauzec/emotion-journaling-application
     SemanticVersion: 1.0.1
-    SourceCodeUrl: https://github.com/awslabs/realworld-serverless-application/tree/1.0.1
+    SourceCodeUrl: https://github.com/cauzec/emotion-journaling-application/tree/main
     LicenseUrl: ../../../LICENSE
     ReadmeUrl: ../../README.md
 

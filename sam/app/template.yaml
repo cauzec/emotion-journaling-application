@@ -5,16 +5,16 @@ Description: >-
   It's primary objective is to serve as a case study of how to build a production grade service using a combination of serverless technologies and approaches.
 Metadata:
   AWS::ServerlessRepo::Application:
-    Name: realworld-serverless-application
+    Name: emotion-journaling-application
     Description: >-
       This project is an adaptation of the AWS Serverless Application Repository.
       It's primary objective is to serve as a case study of how to build a production grade service using a combination of serverless technologies and approaches.
     Author: AWS Serverless Application Repository
     SpdxLicenseId: Apache-2.0
     Labels: [github, serverless, sam]
-    HomePageUrl: https://github.com/awslabs/realworld-serverless-application
+    HomePageUrl: https://github.com/cauzec/emotion-journaling-application
     SemanticVersion: 1.0.1
-    SourceCodeUrl: https://github.com/awslabs/realworld-serverless-application/tree/1.0.1
+    SourceCodeUrl: https://github.com/cauzec/emotion-journaling-application/tree/main
     LicenseUrl: ../../LICENSE
     ReadmeUrl: ../../README.md
 

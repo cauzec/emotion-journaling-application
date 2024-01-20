@@ -2,7 +2,7 @@ openapi: 3.0.0
 
 info:
   title:
-    Fn::Sub: realworld-serverless-application-backend-${Stage}
+    Fn::Sub: emotion-journaling-application-backend-${Stage}
   description: A simplified implementation of AWS Serverless Application Repository
   version: 2019-10-13
 

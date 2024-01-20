@@ -5,15 +5,15 @@ Description: >-
 
 Metadata:
   AWS::ServerlessRepo::Application:
-    Name: realworld-serverless-application-ops-dashboard
+    Name: emotion-journaling-application-ops-dashboard
     Description: >-
       This template creates CloudWatch dashboard for the backend service.
     Author: AWS Serverless Application Repository
     SpdxLicenseId: Apache-2.0
     Labels: [github, serverless, sam]
-    HomePageUrl: https://github.com/awslabs/realworld-serverless-application
+    HomePageUrl: https://github.com/awslabs/emotion-journaling-application
     SemanticVersion: 1.0.1
-    SourceCodeUrl: https://github.com/awslabs/realworld-serverless-application/tree/1.0.1
+    SourceCodeUrl: https://github.com/awslabs/emotion-journaling-application/tree/1.0.1
     LicenseUrl: ../../../LICENSE
     ReadmeUrl: ../../README.md
 
@@ -41,7 +41,7 @@ Resources:
                     "view": "timeSeries",
                     "stacked": false,
                     "metrics": [
-                        [ "AWS/Lambda", "Invocations", "FunctionName", "{{resolve:ssm:/applications/apprepo/${Stage}/lambda/ApiLambda/FunctionName:1}}", "Resource", "{{resolve:ssm:/applications/apprepo/${Stage}/lambda/ApiLambda/FunctionName:1}}:live" ]
+                        [ "AWS/Lambda", "Invocations", "FunctionName", "{{resolve:ssm:/therapists/apprepo/${Stage}/lambda/ApiLambda/FunctionName:1}}", "Resource", "{{resolve:ssm:/therapists/apprepo/${Stage}/lambda/ApiLambda/FunctionName:1}}:live" ]
                     ],
                     "region": "${AWS::Region}",
                     "period": 60,
@@ -56,7 +56,7 @@ Resources:
                 "height": 6,
                 "properties": {
                     "metrics": [
-                        [ "AWS/Lambda", "Duration", "FunctionName", "{{resolve:ssm:/applications/apprepo/${Stage}/lambda/ApiLambda/FunctionName:1}}", "Resource", "{{resolve:ssm:/applications/apprepo/${Stage}/lambda/ApiLambda/FunctionName:1}}:live" ],
+                        [ "AWS/Lambda", "Duration", "FunctionName", "{{resolve:ssm:/therapists/apprepo/${Stage}/lambda/ApiLambda/FunctionName:1}}", "Resource", "{{resolve:ssm:/therapists/apprepo/${Stage}/lambda/ApiLambda/FunctionName:1}}:live" ],
                         [ "...", { "stat": "p50" } ]
                     ],
                     "region": "${AWS::Region}",
@@ -75,7 +75,7 @@ Resources:
                 "height": 6,
                 "properties": {
                     "metrics": [
-                        [ "AWS/ApiGateway", "Count", "ApiName", "realworld-serverless-application-backend-${Stage}" ]
+                        [ "AWS/ApiGateway", "Count", "ApiName", "emotion-journaling-application-backend-${Stage}" ]
                     ],
                     "view": "timeSeries",
                     "stacked": false,
@@ -93,7 +93,7 @@ Resources:
                 "height": 6,
                 "properties": {
                     "metrics": [
-                        [ "AWS/ApiGateway", "4XXError", "ApiName", "realworld-serverless-application-backend-${Stage}" ]
+                        [ "AWS/ApiGateway", "4XXError", "ApiName", "emotion-journaling-application-backend-${Stage}" ]
                     ],
                     "view": "timeSeries",
                     "stacked": false,
@@ -131,7 +131,7 @@ Resources:
                 "height": 6,
                 "properties": {
                     "metrics": [
-                        [ "AWS/ApiGateway", "Latency", "ApiName", "realworld-serverless-application-backend-${Stage}" ],
+                        [ "AWS/ApiGateway", "Latency", "ApiName", "emotion-journaling-application-backend-${Stage}" ],
                         [ ".", "IntegrationLatency", ".", "." ]
                     ],
                     "view": "timeSeries",
@@ -150,7 +150,7 @@ Resources:
                 "height": 6,
                 "properties": {
                     "metrics": [
-                        [ "AWS/ApiGateway", "Latency", "ApiName", "realworld-serverless-application-backend-${Stage}" ],
+                        [ "AWS/ApiGateway", "Latency", "ApiName", "emotion-journaling-application-backend-${Stage}" ],
                         [ ".", "IntegrationLatency", ".", "." ]
                     ],
                     "view": "timeSeries",
@@ -178,7 +178,7 @@ Resources:
                 "width": 18,
                 "height": 6,
                 "properties": {
-                    "query": "SOURCE '{{resolve:ssm:/applications/apprepo/${Stage}/apigateway/ApplicationsApi/AccessLog/LogGroupName:1}}' | parse '* * [*] \"* * *\" * * * * * * \"*\"' as ip, userId, dateTimeString, httpVerb, url, protocol, statusCode, requestId, awsEndpointRequestId, xrayTraceId, responseLatency, integrationLatency, errorMessage\n| sort responseLatency desc\n| limit 10",
+                    "query": "SOURCE '{{resolve:ssm:/therapists/apprepo/${Stage}/apigateway/TherapistApi/AccessLog/LogGroupName:1}}' | parse '* * [*] \"* * *\" * * * * * * \"*\"' as ip, userId, dateTimeString, httpVerb, url, protocol, statusCode, requestId, awsEndpointRequestId, xrayTraceId, responseLatency, integrationLatency, errorMessage\n| sort responseLatency desc\n| limit 10",
                     "region": "${AWS::Region}",
                     "stacked": false,
                     "view": "table",
@@ -192,7 +192,7 @@ Resources:
                 "width": 18,
                 "height": 6,
                 "properties": {
-                    "query": "SOURCE '{{resolve:ssm:/applications/apprepo/${Stage}/apigateway/ApplicationsApi/AccessLog/LogGroupName:1}}' | parse '* * [*] \"* * *\" * * * * * * \"*\"' as ip, userId, dateTimeString, httpVerb, url, protocol, statusCode, requestId, awsEndpointRequestId, xrayTraceId, responseLatency, integrationLatency, errorMessage\n| stats count() as count by userId\n| sort by count desc\n| limit 10",
+                    "query": "SOURCE '{{resolve:ssm:/therapists/apprepo/${Stage}/apigateway/TherapistApi/AccessLog/LogGroupName:1}}' | parse '* * [*] \"* * *\" * * * * * * \"*\"' as ip, userId, dateTimeString, httpVerb, url, protocol, statusCode, requestId, awsEndpointRequestId, xrayTraceId, responseLatency, integrationLatency, errorMessage\n| stats count() as count by userId\n| sort by count desc\n| limit 10",
                     "region": "${AWS::Region}",
                     "stacked": false,
                     "view": "table",
@@ -206,7 +206,7 @@ Resources:
                 "width": 18,
                 "height": 6,
                 "properties": {
-                    "query": "SOURCE '{{resolve:ssm:/applications/apprepo/${Stage}/apigateway/ApplicationsApi/AccessLog/LogGroupName:1}}' | parse '* * [*] \"* * *\" * * * * * * \"*\"' as ip, userId, dateTimeString, httpVerb, url, protocol, statusCode, requestId, awsEndpointRequestId, xrayTraceId, responseLatency, integrationLatency, errorMessage\n| filter statusCode like /4\\d\\d/\n| stats count() as count by statusCode\n| sort by count desc\n| limit 10",
+                    "query": "SOURCE '{{resolve:ssm:/therapists/apprepo/${Stage}/apigateway/TherapistApi/AccessLog/LogGroupName:1}}' | parse '* * [*] \"* * *\" * * * * * * \"*\"' as ip, userId, dateTimeString, httpVerb, url, protocol, statusCode, requestId, awsEndpointRequestId, xrayTraceId, responseLatency, integrationLatency, errorMessage\n| filter statusCode like /4\\d\\d/\n| stats count() as count by statusCode\n| sort by count desc\n| limit 10",
                     "region": "${AWS::Region}",
                     "stacked": false,
                     "view": "table",
@@ -220,7 +220,7 @@ Resources:
                 "width": 18,
                 "height": 6,
                 "properties": {
-                    "query": "SOURCE '{{resolve:ssm:/applications/apprepo/${Stage}/apigateway/ApplicationsApi/AccessLog/LogGroupName:1}}' | parse '* * [*] \"* * *\" * * * * * * \"*\"' as ip, userId, dateTimeString, httpVerb, url, protocol, statusCode, requestId, awsEndpointRequestId, xrayTraceId, responseLatency, integrationLatency, errorMessage\n| filter statusCode like /5\\d\\d/\n| stats count() as count by errorMessage\n| sort by count desc\n| limit 10",
+                    "query": "SOURCE '{{resolve:ssm:/therapists/apprepo/${Stage}/apigateway/TherapistApi/AccessLog/LogGroupName:1}}' | parse '* * [*] \"* * *\" * * * * * * \"*\"' as ip, userId, dateTimeString, httpVerb, url, protocol, statusCode, requestId, awsEndpointRequestId, xrayTraceId, responseLatency, integrationLatency, errorMessage\n| filter statusCode like /5\\d\\d/\n| stats count() as count by errorMessage\n| sort by count desc\n| limit 10",
                     "region": "${AWS::Region}",
                     "stacked": false,
                     "view": "table",
@@ -236,7 +236,7 @@ Resources:
                 "properties": {
                     "metrics": [
                         [ { "expression": "100 - 100 * errorRate", "label": "Availability (%)", "id": "availability", "yAxis": "right" } ],
-                        [ "AWS/ApiGateway", "5XXError", "ApiName", "realworld-serverless-application-backend-${Stage}", { "id": "errorRate", "visible": false, "label": "5XXErrorRate" } ],
+                        [ "AWS/ApiGateway", "5XXError", "ApiName", "emotion-journaling-application-backend-${Stage}", { "id": "errorRate", "visible": false, "label": "5XXErrorRate" } ],
                         [ "...", { "id": "errorCount", "stat": "Sum", "label": "5XXError" } ]
                     ],
                     "view": "timeSeries",
@@ -266,7 +266,7 @@ Resources:
                 "height": 6,
                 "properties": {
                     "metrics": [
-                        [ "AWS/Lambda", "Errors", "FunctionName", "{{resolve:ssm:/applications/apprepo/${Stage}/lambda/ApiLambda/FunctionName:1}}", "Resource", "{{resolve:ssm:/applications/apprepo/${Stage}/lambda/ApiLambda/FunctionName:1}}:live", { "id": "errors", "color": "#d13212" } ],
+                        [ "AWS/Lambda", "Errors", "FunctionName", "{{resolve:ssm:/therapists/apprepo/${Stage}/lambda/ApiLambda/FunctionName:1}}", "Resource", "{{resolve:ssm:/therapists/apprepo/${Stage}/lambda/ApiLambda/FunctionName:1}}:live", { "id": "errors", "color": "#d13212" } ],
                         [ ".", "Invocations", ".", ".", ".", ".", { "id": "invocations", "visible": false } ],
                         [ { "expression": "100 - 100 * errors / invocations", "label": "Success rate (%)", "id": "availability", "yAxis": "right", "period": 60 } ]
                     ],
@@ -290,7 +290,7 @@ Resources:
                 "width": 18,
                 "height": 6,
                 "properties": {
-                    "query": "SOURCE '{{resolve:ssm:/applications/apprepo/${Stage}/apigateway/ApplicationsApi/AccessLog/LogGroupName:1}}' | parse '* * [*] \"* * *\" * * * * * * \"*\"' as ip, userId, dateTimeString, httpVerb, url, protocol, statusCode, requestId, awsEndpointRequestId, xrayTraceId, responseLatency, integrationLatency, errorMessage\n| filter statusCode like /5\\d\\d/\n| stats count(statusCode) as errorCount by userId, statusCode\n| sort errorCount desc\n| limit 10",
+                    "query": "SOURCE '{{resolve:ssm:/therapists/apprepo/${Stage}/apigateway/TherapistApi/AccessLog/LogGroupName:1}}' | parse '* * [*] \"* * *\" * * * * * * \"*\"' as ip, userId, dateTimeString, httpVerb, url, protocol, statusCode, requestId, awsEndpointRequestId, xrayTraceId, responseLatency, integrationLatency, errorMessage\n| filter statusCode like /5\\d\\d/\n| stats count(statusCode) as errorCount by userId, statusCode\n| sort errorCount desc\n| limit 10",
                     "region": "${AWS::Region}",
                     "stacked": false,
                     "view": "table",
@@ -304,7 +304,7 @@ Resources:
   DashboardName:
     Type: "AWS::SSM::Parameter"
     Properties:
-      Name: !Sub "/applications/apprepo/${Stage}/cloudwatch/DashboardName"
+      Name: !Sub "/therapists/apprepo/${Stage}/cloudwatch/DashboardName"
       Type: "String"
       Value: !Ref Dashboard
       Description: "Dashboard name"

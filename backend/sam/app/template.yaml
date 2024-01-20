@@ -11,9 +11,9 @@ Metadata:
     Author: AWS Serverless Application Repository
     SpdxLicenseId: Apache-2.0
     Labels: [github, serverless, sam]
-    HomePageUrl: https://github.com/cauzec/emoj-sam
+    HomePageUrl: https://github.com/cauzec/emotion-journaling-application
     SemanticVersion: 1.0.1
-    SourceCodeUrl: https://github.com/cauzec/emoj-sam/tree
+    SourceCodeUrl: https://github.com/cauzec/emotion-journaling-application/tree/main
     LicenseUrl: ../../../LICENSE
     ReadmeUrl: ../../README.md
 
