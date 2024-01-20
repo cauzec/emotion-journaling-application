@@ -132,7 +132,7 @@ Resources:
   ApiAccessLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
-      LogGroupName: !Sub /aws/apigateway/AccessLog-${ApplicationsApi}
+      LogGroupName: !Sub /aws/apigateway/AccessLog-${TherapistApi}
       RetentionInDays: 3653
 
   # Alarms used in canary deployment for Applications API.
