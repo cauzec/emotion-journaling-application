@@ -1,0 +1,306 @@
+openapi: 3.0.0
+
+info:
+  title:
+    Fn::Sub: realworld-serverless-application-backend-${Stage}
+  description: A simplified implementation of AWS Serverless Application Repository
+  version: 2019-10-13
+
+# Enable request validator. See doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-request-validation-sample-api-swagger.html
+x-amazon-apigateway-request-validators:
+  all:
+    validateRequestBody: true
+    validateRequestParameters: true
+x-amazon-apigateway-request-validator: all
+
+x-amazon-apigateway-gateway-responses:
+  # Provide more detailed error message for bad request body errors. See doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-swagger-extensions-gateway-responses.html
+  BAD_REQUEST_BODY:
+    responseTemplates:
+      application/json: '{"errorCode": "BadRequestBody", "message": "$context.error.validationErrorString"}'
+    responseParameters:
+      gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+  DEFAULT_4XX:
+    responseParameters:
+      gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+  DEFAULT_5XX:
+    responseParameters:
+      gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+        
+paths:
+  /therapist:
+    summary: Operations about the therapist
+    description: Contains the list of operations of therapists
+    get:
+      tags:
+        - Therapist
+      summary: Get list of therapists
+      description: Returns the list of therapists
+      operationId: getTherapistList
+      responses:
+        '211' :
+          $ref: '#/components/responses/211TherapistListResponse'
+        '4XX':
+          $ref: '#/components/responses/4XXResponse'
+        '5XX':
+          $ref: '#/components/responses/5XXResponse'
+        default:
+          description: Success
+    post:
+      tags:
+        - Therapist
+      summary: Add a new therapist
+      description: Adds a new therapist and returns the added therapist
+      operationId: addTherapist
+      responses:
+        '202' :
+          $ref: '#/components/responses/202TherapistResponse'
+        '400':
+          description: "Bad Request Exception"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        '4XX':
+          $ref: '#/components/responses/4XXResponse'
+        '5XX':
+          $ref: '#/components/responses/5XXResponse'
+        default:
+          description: Success
+      requestBody:
+        description: The new therapist to add
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Therapist'
+  /therapist/{therapistId}:
+    summary: Operations on a particular therapist
+    description: Contains the list of operations on a therapist given in the therapistId
+    get:
+      tags:
+        - Therapist
+      summary: Get details of a single therapist
+      description: Returns the details of the given therapistId 
+      operationId: getTherapist
+      parameters: 
+        - name: therapistId
+          in: path
+          description: The unique therapist ID
+          required: true
+          schema:
+            type: number
+      responses:
+        '202' :
+          $ref: '#/components/responses/202TherapistResponse'
+        '4XX':
+          $ref: '#/components/responses/4XXResponse'
+        '5XX':
+          $ref: '#/components/responses/5XXResponse'
+        default:
+          description: Success
+    put:
+      tags:
+        - Therapist
+      summary: Update the details of a therapist
+      description: Updates the details of the given therapist Id
+      operationId: updateTherapist
+      parameters: 
+        - name: therapistId
+          in: path
+          description: The unique therapist ID
+          required: true
+          schema:
+            type: number
+      responses:
+        '202' :
+          $ref: '#/components/responses/202TherapistResponse'
+        '4XX':
+          $ref: '#/components/responses/4XXResponse'
+        '5XX':
+          $ref: '#/components/responses/5XXResponse'
+        default:
+          description: Success
+      requestBody:
+        description: The therapist details to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Therapist'
+    delete:
+      tags:
+        - Therapist
+      summary: Deletes the details of a therapist
+      description: Deletes the details of the given therapist Id
+      operationId: deleteTherapist
+      parameters: 
+        - name: therapistId
+          in: path
+          description: The unique therapist ID
+          required: true
+          schema:
+            type: number
+      responses:
+        '202' :
+          $ref: '#/components/responses/202TherapistResponse'
+        '4XX':
+          $ref: '#/components/responses/4XXResponse'
+        '5XX':
+          $ref: '#/components/responses/5XXResponse'
+        default:
+          description: Success
+  /therapist/search:
+    summary: Operations on searching a therapist by name
+    description: Contains the list of operations for clients to search therapists by their name
+    get:
+      tags:
+        - Therapist
+      summary: Get details of therapist name given by the client
+      description: Returns the details of the therapist name given by client
+      operationId: getTherapistByName
+      parameters: 
+        - name: therapistName
+          in: query
+          description: Name of therapist being searched
+          schema:
+            type: string
+        - name: therapistArea
+          in: query
+          description: Area of therapist being searched
+          schema:
+            type: string
+        - name: therapistType
+          in: query
+          description: Type of therapist being searched
+          schema:
+            type: string
+            enum:
+              - Psychologist
+              - Psychiatrist
+              - Counsellor
+      responses:
+        '211' :
+          $ref: '#/components/responses/211TherapistListResponse'
+        '4XX':
+          $ref: '#/components/responses/4XXResponse'
+        '5XX':
+          $ref: '#/components/responses/5XXResponse'
+        default:
+          description: Success
+
+
+components:
+  schemas:
+    BadRequestException:
+      type: object
+      properties:
+        message:
+          type: string
+        errorCode:
+          type: string
+    Therapist:
+      type: object
+      description: Represents a therapist entry
+      properties:
+        therapistId:
+          type: string
+          description: Unique ID of a therapist
+        therapistName:
+          type: string
+          description: Name of the therapist
+        creationTime:
+          type: string
+        therapistMob:
+          type: number
+          description: Mobile number of the therapist
+        therapistArea:
+          type: string
+          description: Area of the place from where the therapists operates
+        therapistType:
+          type: string
+          description: Type of the therapist
+      required: 
+        - therapistName
+        - therapistMob
+        - therapistArea
+        - therapistType
+      example: 
+        therapistId: 1
+        therapistName: Dr. Prateek Gupta
+        therapistMob: 9785462130
+        therapistArea: 226029
+        therapistType: Counsellor
+    TherapistSummary:
+      type: object
+      properties:
+        therapistId:
+          type: string
+          description: Unique ID of a therapist
+        therapistName:
+          type: string
+          description: Name of the therapist
+        therapistMob:
+          type: number
+          description: Mobile number of the therapist
+        therapistArea:
+          type: string
+          description: Area of the place from where the therapists operates
+        therapistType:
+          type: string
+          description: Type of the therapist
+        creationTime:
+          type: string
+    TherapistList:
+      type: object
+      properties:
+        therapists:
+          type: array
+          items:
+            $ref: "#/components/schemas/TherapistSummary"
+        nextToken:
+          type: string
+      example:
+        - 
+          - therapistId: 1
+          - therapistName: Dr. Prateek Gupta
+          - therapistMob: 9785462130
+          - therapistArea: 226029
+          - therapistType: Counsellor
+        - 
+          - therapistId: 2
+          - therapistName: Dr. Anurag Gupta
+          - therapistMob: 9785462130
+          - therapistArea: 226027
+          - therapistType: Psychologist
+  
+  responses:
+    200Response:
+      description: Success
+    201UserResponse:
+      description: Successfully added a user
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Login'
+    202TherapistResponse:
+      description: Successfully added a therapist
+      content: 
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Therapist'
+    211TherapistListResponse:
+      description: Successfully returned a list of therapists
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TherapistList'
+    400Response:
+      description: "Bad Request Exception"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/BadRequestException"
+    4XXResponse:
+      description: Bad Request
+    5XXResponse:
+      description: Internal Server Error

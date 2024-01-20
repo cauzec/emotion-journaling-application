@@ -1,0 +1,475 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "description" : "A simplified implementation of AWS Serverless Application Repository",
+    "version" : "2019-10-13"
+  },
+  "servers" : [ {
+    "url" : "/"
+  } ],
+  "paths" : {
+    "/therapist" : {
+      "summary" : "Operations about the therapist",
+      "description" : "Contains the list of operations of therapists",
+      "get" : {
+        "tags" : [ "Therapist" ],
+        "summary" : "Get list of therapists",
+        "description" : "Returns the list of therapists",
+        "operationId" : "getTherapistList",
+        "responses" : {
+          "211" : {
+            "description" : "Successfully returned a list of therapists",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/TherapistList"
+                }
+              }
+            }
+          },
+          "4XX" : {
+            "description" : "Bad Request"
+          },
+          "5XX" : {
+            "description" : "Internal Server Error"
+          },
+          "default" : {
+            "description" : "Success"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Therapist" ],
+        "summary" : "Add a new therapist",
+        "description" : "Adds a new therapist and returns the added therapist",
+        "operationId" : "addTherapist",
+        "requestBody" : {
+          "description" : "The new therapist to add",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Therapist"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "202" : {
+            "description" : "Successfully added a therapist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Therapist"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request Exception",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BadRequestException"
+                }
+              }
+            }
+          },
+          "4XX" : {
+            "description" : "Bad Request"
+          },
+          "5XX" : {
+            "description" : "Internal Server Error"
+          },
+          "default" : {
+            "description" : "Success"
+          }
+        }
+      }
+    },
+    "/therapist/{therapistId}" : {
+      "summary" : "Operations on a particular therapist",
+      "description" : "Contains the list of operations on a therapist given in the therapistId",
+      "get" : {
+        "tags" : [ "Therapist" ],
+        "summary" : "Get details of a single therapist",
+        "description" : "Returns the details of the given therapistId",
+        "operationId" : "getTherapist",
+        "parameters" : [ {
+          "name" : "therapistId",
+          "in" : "path",
+          "description" : "The unique therapist ID",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "number"
+          }
+        } ],
+        "responses" : {
+          "202" : {
+            "description" : "Successfully added a therapist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Therapist"
+                }
+              }
+            }
+          },
+          "4XX" : {
+            "description" : "Bad Request"
+          },
+          "5XX" : {
+            "description" : "Internal Server Error"
+          },
+          "default" : {
+            "description" : "Success"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Therapist" ],
+        "summary" : "Update the details of a therapist",
+        "description" : "Updates the details of the given therapist Id",
+        "operationId" : "updateTherapist",
+        "parameters" : [ {
+          "name" : "therapistId",
+          "in" : "path",
+          "description" : "The unique therapist ID",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "number"
+          }
+        } ],
+        "requestBody" : {
+          "description" : "The therapist details to update",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Therapist"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "202" : {
+            "description" : "Successfully added a therapist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Therapist"
+                }
+              }
+            }
+          },
+          "4XX" : {
+            "description" : "Bad Request"
+          },
+          "5XX" : {
+            "description" : "Internal Server Error"
+          },
+          "default" : {
+            "description" : "Success"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "Therapist" ],
+        "summary" : "Deletes the details of a therapist",
+        "description" : "Deletes the details of the given therapist Id",
+        "operationId" : "deleteTherapist",
+        "parameters" : [ {
+          "name" : "therapistId",
+          "in" : "path",
+          "description" : "The unique therapist ID",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "number"
+          }
+        } ],
+        "responses" : {
+          "202" : {
+            "description" : "Successfully added a therapist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Therapist"
+                }
+              }
+            }
+          },
+          "4XX" : {
+            "description" : "Bad Request"
+          },
+          "5XX" : {
+            "description" : "Internal Server Error"
+          },
+          "default" : {
+            "description" : "Success"
+          }
+        }
+      }
+    },
+    "/therapist/search" : {
+      "summary" : "Operations on searching a therapist by name",
+      "description" : "Contains the list of operations for clients to search therapists by their name",
+      "get" : {
+        "tags" : [ "Therapist" ],
+        "summary" : "Get details of therapist name given by the client",
+        "description" : "Returns the details of the therapist name given by client",
+        "operationId" : "getTherapistByName",
+        "parameters" : [ {
+          "name" : "therapistName",
+          "in" : "query",
+          "description" : "Name of therapist being searched",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "therapistArea",
+          "in" : "query",
+          "description" : "Area of therapist being searched",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "therapistType",
+          "in" : "query",
+          "description" : "Type of therapist being searched",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "Psychologist", "Psychiatrist", "Counsellor" ]
+          }
+        } ],
+        "responses" : {
+          "211" : {
+            "description" : "Successfully returned a list of therapists",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/TherapistList"
+                }
+              }
+            }
+          },
+          "4XX" : {
+            "description" : "Bad Request"
+          },
+          "5XX" : {
+            "description" : "Internal Server Error"
+          },
+          "default" : {
+            "description" : "Success"
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "BadRequestException" : {
+        "type" : "object",
+        "properties" : {
+          "message" : {
+            "type" : "string"
+          },
+          "errorCode" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Therapist" : {
+        "required" : [ "therapistArea", "therapistMob", "therapistName", "therapistType" ],
+        "type" : "object",
+        "properties" : {
+          "therapistId" : {
+            "type" : "string",
+            "description" : "Unique ID of a therapist"
+          },
+          "therapistName" : {
+            "type" : "string",
+            "description" : "Name of the therapist"
+          },
+          "creationTime" : {
+            "type" : "string"
+          },
+          "therapistMob" : {
+            "type" : "number",
+            "description" : "Mobile number of the therapist"
+          },
+          "therapistArea" : {
+            "type" : "string",
+            "description" : "Area of the place from where the therapists operates"
+          },
+          "therapistType" : {
+            "type" : "string",
+            "description" : "Type of the therapist"
+          }
+        },
+        "description" : "Represents a therapist entry",
+        "example" : {
+          "therapistId" : 1,
+          "therapistName" : "Dr. Prateek Gupta",
+          "therapistMob" : 9785462130,
+          "therapistArea" : 226029,
+          "therapistType" : "Counsellor"
+        }
+      },
+      "TherapistSummary" : {
+        "type" : "object",
+        "properties" : {
+          "therapistId" : {
+            "type" : "string",
+            "description" : "Unique ID of a therapist"
+          },
+          "therapistName" : {
+            "type" : "string",
+            "description" : "Name of the therapist"
+          },
+          "therapistMob" : {
+            "type" : "number",
+            "description" : "Mobile number of the therapist"
+          },
+          "therapistArea" : {
+            "type" : "string",
+            "description" : "Area of the place from where the therapists operates"
+          },
+          "therapistType" : {
+            "type" : "string",
+            "description" : "Type of the therapist"
+          },
+          "creationTime" : {
+            "type" : "string"
+          }
+        }
+      },
+      "TherapistList" : {
+        "type" : "object",
+        "properties" : {
+          "therapists" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/TherapistSummary"
+            }
+          },
+          "nextToken" : {
+            "type" : "string"
+          }
+        },
+        "example" : [ [ {
+          "therapistId" : 1
+        }, {
+          "therapistName" : "Dr. Prateek Gupta"
+        }, {
+          "therapistMob" : 9785462130
+        }, {
+          "therapistArea" : 226029
+        }, {
+          "therapistType" : "Counsellor"
+        } ], [ {
+          "therapistId" : 2
+        }, {
+          "therapistName" : "Dr. Anurag Gupta"
+        }, {
+          "therapistMob" : 9785462130
+        }, {
+          "therapistArea" : 226027
+        }, {
+          "therapistType" : "Psychologist"
+        } ] ]
+      }
+    },
+    "responses" : {
+      "200Response" : {
+        "description" : "Success"
+      },
+      "201UserResponse" : {
+        "description" : "Successfully added a user",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/Login"
+            }
+          }
+        }
+      },
+      "202TherapistResponse" : {
+        "description" : "Successfully added a therapist",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/Therapist"
+            }
+          }
+        }
+      },
+      "211TherapistListResponse" : {
+        "description" : "Successfully returned a list of therapists",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/TherapistList"
+            }
+          }
+        }
+      },
+      "400Response" : {
+        "description" : "Bad Request Exception",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/BadRequestException"
+            }
+          }
+        }
+      },
+      "4XXResponse" : {
+        "description" : "Bad Request"
+      },
+      "5XXResponse" : {
+        "description" : "Internal Server Error"
+      }
+    }
+  },
+  "x-amazon-apigateway-request-validators" : {
+    "all" : {
+      "validateRequestBody" : true,
+      "validateRequestParameters" : true
+    }
+  },
+  "x-amazon-apigateway-request-validator" : "all",
+  "x-amazon-apigateway-gateway-responses" : {
+    "BAD_REQUEST_BODY" : {
+      "responseTemplates" : {
+        "application/json" : "{\"errorCode\": \"BadRequestBody\", \"message\": \"$context.error.validationErrorString\"}"
+      },
+      "responseParameters" : {
+        "gatewayresponse.header.Access-Control-Allow-Origin" : "'*'"
+      }
+    },
+    "DEFAULT_4XX" : {
+      "responseParameters" : {
+        "gatewayresponse.header.Access-Control-Allow-Origin" : "'*'"
+      }
+    },
+    "DEFAULT_5XX" : {
+      "responseParameters" : {
+        "gatewayresponse.header.Access-Control-Allow-Origin" : "'*'"
+      }
+    }
+  }
+}

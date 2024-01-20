@@ -1,0 +1,82 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >-
+  This template creates the database resources for the backend service.
+
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: emotion-journaling-application-backend-database
+    Description: >-
+      This template creates the database resources for the backend service.
+    Author: AWS Serverless Application Repository
+    SpdxLicenseId: Apache-2.0
+    Labels: [github, serverless, sam]
+    HomePageUrl: https://github.com/cauzec/emoj-sam
+    SemanticVersion: 1.0.1
+    SourceCodeUrl: https://github.com/cauzec/emoj-sam/tree
+    LicenseUrl: ../../../LICENSE
+    ReadmeUrl: ../../README.md
+
+Parameters:
+  Stage:
+    Type: String
+    Description: The stage where the application is running in, e.g., dev, prod.
+Resources:
+  Therpists:
+    Type: 'AWS::DynamoDB::Table'
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: 'userId'
+          AttributeType: 'S'
+        - AttributeName: 'therapistId'
+          AttributeType: 'S'
+      KeySchema:
+        - AttributeName: 'userId'
+          KeyType: 'HASH'
+        - AttributeName: 'therapistId'
+          KeyType: 'RANGE'
+      StreamSpecification:
+        StreamViewType: 'NEW_AND_OLD_IMAGES'
+      BillingMode: PAY_PER_REQUEST
+      SSESpecification:
+        SSEEnabled: true
+        SSEType: KMS
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+
+  # Storing resources names to SSM
+  TherapistsTableName:
+    Type: "AWS::SSM::Parameter"
+    Properties:
+      Name: !Sub "/therpists/apprepo/${Stage}/ddb/Therapists/TableName"
+      Type: "String"
+      Value: !Ref Therapists
+      Description: "Therapists Table name"
+  TherpistsTableArn:
+    Type: "AWS::SSM::Parameter"
+    Properties:
+      Name: !Sub "/therpists/apprepo/${Stage}/ddb/Therpists/TableArn"
+      Type: "String"
+      Value: !GetAtt Therpists.Arn
+      Description: "Therpists Table ARN"
+  TherpistsTableStreamArn:
+    Type: "AWS::SSM::Parameter"
+    Properties:
+      Name: !Sub "/therpists/apprepo/${Stage}/ddb/Therpists/StreamArn"
+      Type: "String"
+      Value: !GetAtt Therpists.StreamArn
+      Description: "Therpists DynamoDB Stream ARN"
+  TherpistsTableStreamName:
+    Type: "AWS::SSM::Parameter"
+    Properties:
+      Name: !Sub "/therpists/apprepo/${Stage}/ddb/Therpists/StreamName"
+      Type: "String"
+      Value:
+        !Select
+          - 2
+          - !Split
+            - '/'
+            - !Select
+              - 5
+              - !Split [':', !GetAtt Therpists.StreamArn]
+      Description: "Therpists DynamoDB Stream name"
