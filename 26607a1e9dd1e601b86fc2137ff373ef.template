@@ -1,0 +1,335 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: This template creates API Gateway and Lambda resources for the backend
+  service.
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: emotion-journaling-application-backend-api
+    Description: This template creates API Gateway and Lambda resources for the backend
+      service.
+    Author: AWS Serverless Application Repository
+    SpdxLicenseId: Apache-2.0
+    Labels:
+    - github
+    - serverless
+    - sam
+    HomePageUrl: https://github.com/cauzec/emotion-journaling-application
+    SemanticVersion: 1.0.1
+    SourceCodeUrl: https://github.com/cauzec/emotion-journaling-application/tree/main
+    LicenseUrl: s3://sam-app-testing-3/ef55abdc50973e5ec00f992abdd5cd51
+    ReadmeUrl: s3://sam-app-testing-3/eaabb31fc3f0f47433da4878e3a3ebf7
+Parameters:
+  Stage:
+    Type: String
+    Description: The stage where the application is running in, e.g., dev, prod.
+Conditions:
+  IsProd:
+    Fn::Equals:
+    - Ref: Stage
+    - prod
+Resources:
+  TherapistApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      DefinitionBody:
+        Fn::Transform:
+          Name: AWS::Include
+          Parameters:
+            Location: s3://sam-app-testing-3/9a502f8f8e095e86f192f0cbdc13cd3e
+      StageName: Prod
+      TracingEnabled: true
+      MethodSettings:
+      - ResourcePath: /*
+        HttpMethod: '*'
+        DataTraceEnabled:
+          Fn::If:
+          - IsProd
+          - false
+          - true
+        LoggingLevel: INFO
+        MetricsEnabled: true
+        ThrottlingRateLimit: 5
+        ThrottlingBurstLimit: 10
+      AccessLogSetting:
+        DestinationArn:
+          Fn::Sub: arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:${ApiAccessLogGroup}
+        Format: $context.identity.sourceIp $context.authorizer.claims.sub [$context.requestTime]
+          "$context.httpMethod $context.resourcePath $context.protocol" $context.status
+          $context.requestId $context.awsEndpointRequestId $context.xrayTraceId $context.responseLatency
+          $context.integrationLatency "$context.error.message"
+      OpenApiVersion: 3.0.0
+      Cors:
+        AllowOrigin: "'*'"
+        AllowHeaders: "'authorization, content-type'"
+  ApiLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://sam-app-testing-3/b03aa30e40b40007f4158a9bb46ea278
+      Handler: software.amazon.serverless.apprepo.container.ApiLambdaHandler::handleRequest
+      MemorySize: 1536
+      Timeout: 30
+      Runtime: java8
+      Tracing: Active
+      Environment:
+        Variables:
+          STAGE:
+            Ref: Stage
+      Policies:
+      - SSMParameterReadPolicy:
+          ParameterName:
+            Fn::Sub: therapists/apprepo/${Stage}/*
+      - DynamoDBCrudPolicy:
+          TableName:
+            Fn::Sub: '{{resolve:ssm:/therapists/apprepo/${Stage}/ddb/Therapists/TableName:1}}'
+      - Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - kms:Encrypt
+          - kms:Decrypt
+          Resource:
+            Fn::GetAtt:
+            - PaginationKey
+            - Arn
+      Events:
+        AnyApi:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: TherapistApi
+            Path: /*
+            Method: '*'
+      AutoPublishAlias: live
+      DeploymentPreference:
+        Enabled: true
+        Type:
+          Fn::If:
+          - IsProd
+          - Canary10Percent15Minutes
+          - AllAtOnce
+        Alarms:
+        - Ref: ApiAvailability
+        - Ref: Api4xxErrors
+        - Ref: ApiLatencyP50
+    DependsOn: PaginationTokenTtlInSeconds
+  PaginationKey:
+    Type: AWS::KMS::Key
+    Properties:
+      Description: Encrypt and decrypt pagination tokens for List APIs.
+      EnableKeyRotation: 'true'
+      KeyPolicy:
+        Version: '2012-10-17'
+        Id: key-policy
+        Statement:
+        - Sid: Enable Root User Permissions
+          Effect: Allow
+          Principal:
+            AWS:
+            - Fn::Sub: arn:${AWS::Partition}:iam::${AWS::AccountId}:root
+          Action: kms:*
+          Resource: '*'
+  ApiGatewayPushToCloudWatchRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Description: Push logs to CloudWatch logs from API Gateway
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - apigateway.amazonaws.com
+          Action: sts:AssumeRole
+      ManagedPolicyArns:
+      - Fn::Sub: arn:${AWS::Partition}:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs
+  ApiAccount:
+    Type: AWS::ApiGateway::Account
+    Properties:
+      CloudWatchRoleArn:
+        Fn::GetAtt:
+        - ApiGatewayPushToCloudWatchRole
+        - Arn
+  ApiAccessLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName:
+        Fn::Sub: /aws/apigateway/AccessLog-${ApplicationsApi}
+      RetentionInDays: 3653
+  ApiAvailability:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      ActionsEnabled: false
+      AlarmDescription:
+        Fn::Sub: Api availability is lower than 90%. Only used in canary deployment
+          for Lambda ${ApiLambda}
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      Dimensions:
+      - Name: ApiName
+        Value:
+          Fn::Sub: emotion-journaling-application-backend-${Stage}
+      EvaluationPeriods: 5
+      MetricName: 5XXErrors
+      Namespace: AWS/ApiGateway
+      Period: 60
+      Statistic: Average
+      Threshold: 0.1
+      TreatMissingData: notBreaching
+  Api4xxErrors:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      ActionsEnabled: false
+      AlarmDescription:
+        Fn::Sub: Api 4xx Errors are more than 30%. Only used in canary deployment
+          for Lambda ${ApiLambda}
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      Dimensions:
+      - Name: ApiName
+        Value:
+          Fn::Sub: emotion-journaling-application-backend-${Stage}
+      EvaluationPeriods: 5
+      MetricName: 4XXErrors
+      Namespace: AWS/ApiGateway
+      Period: 60
+      Statistic: Average
+      Threshold: 0.3
+      TreatMissingData: notBreaching
+  ApiLatencyP50:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      ActionsEnabled: false
+      AlarmDescription:
+        Fn::Sub: Api latency p50 is too high. Only used in canary deployment for Lambda
+          ${ApiLambda}
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      Dimensions:
+      - Name: ApiName
+        Value:
+          Fn::Sub: emotion-journaling-application-backend-${Stage}
+      EvaluationPeriods: 5
+      MetricName: Latency
+      Namespace: AWS/ApiGateway
+      Period: 60
+      ExtendedStatistic: p50
+      Threshold: 200
+      TreatMissingData: notBreaching
+  ApiLambdaName:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name:
+        Fn::Sub: /therapists/apprepo/${Stage}/lambda/ApiLambda/FunctionName
+      Type: String
+      Value:
+        Ref: ApiLambda
+      Description: ApiLambda function name
+  ApiLambdaArn:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name:
+        Fn::Sub: /therapists/apprepo/${Stage}/lambda/ApiLambda/FunctionArn
+      Type: String
+      Value:
+        Ref: ApiLambda
+      Description: ApiLambda function ARN
+  ApiLambdaVersion:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name:
+        Fn::Sub: /therapists/apprepo/${Stage}/lambda/ApiLambda/FunctionVersion
+      Type: String
+      Value:
+        Ref: ApiLambda.Version
+      Description: ApiLambda function version for alias live
+  ApiId:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name:
+        Fn::Sub: /therapists/apprepo/${Stage}/apigateway/TherapistApi/Id
+      Type: String
+      Value:
+        Ref: TherapistApi
+      Description: TherapistApi Id
+  ApiEndpoint:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name:
+        Fn::Sub: /therapists/apprepo/${Stage}/apigateway/TherapistApi/Endpoint
+      Type: String
+      Value:
+        Fn::Sub: https://${TherapistApi}.execute-api.${AWS::Region}.amazonaws.com
+      Description: TherapistApi endpoint
+  ApiStage:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name:
+        Fn::Sub: /therapists/apprepo/${Stage}/apigateway/TherapistApi/Stage
+      Type: String
+      Value:
+        Ref: TherapistApi.Stage
+      Description: TherapistApi API Gateway stage
+  ApiAccessLogGroupName:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name:
+        Fn::Sub: /therapists/apprepo/${Stage}/apigateway/TherapistApi/AccessLog/LogGroupName
+      Type: String
+      Value:
+        Ref: ApiAccessLogGroup
+      Description: TherapistApi access log CloudWatch log group name
+  ApiAccessLogGroupArn:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name:
+        Fn::Sub: /therapists/apprepo/${Stage}/apigateway/TherapistApi/AccessLog/LogGroupArn
+      Type: String
+      Value:
+        Fn::Sub: arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:${ApiAccessLogGroup}
+      Description: TherapistApi access log CloudWatch log group ARN
+  ApiUserPoolUserPoolId:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name:
+        Fn::Sub: /therapists/apprepo/${Stage}/cognito/userpool/TherapistApi/Id
+      Type: String
+      Value:
+        Ref: TherapistApiUserPool
+      Description: TherapistApi Cognito User Pool ID.
+  ApiUserPoolUserPoolArn:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name:
+        Fn::Sub: /therapists/apprepo/${Stage}/cognito/userpool/TherapistApi/Arn
+      Type: String
+      Value:
+        Fn::GetAtt:
+        - TherapistApiUserPool
+        - Arn
+      Description: TherapistApi Cognito User Pool ARN.
+  PaginationKeyId:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name:
+        Fn::Sub: /therapists/apprepo/${Stage}/kms/pagination/KeyId
+      Type: String
+      Value:
+        Ref: PaginationKey
+      Description: KMS pagination key Id.
+  PaginationKeyArn:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name:
+        Fn::Sub: /therapists/apprepo/${Stage}/kms/pagination/KeyArn
+      Type: String
+      Value:
+        Fn::GetAtt:
+        - PaginationKey
+        - Arn
+      Description: KMS pagination key ARN.
+  PaginationTokenTtlInSeconds:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name:
+        Fn::Sub: /therapists/apprepo/${Stage}/configuration/pagination/TtlInSeconds
+      Type: String
+      Value: 360
+      Description: Pagination token TTL in seconds. The pagination token is used in
+        List APIs.

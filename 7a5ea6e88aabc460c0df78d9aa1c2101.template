@@ -1,0 +1,41 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: This application creates a backend service using serverless technologies
+  such as API Gateway, Lambda etc.
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: emotion-journaling-application-backend
+    Description: This application creates a backend service using serverless technologies
+      such as API Gateway, Lambda etc.
+    Author: AWS Serverless Application Repository
+    SpdxLicenseId: Apache-2.0
+    Labels:
+    - github
+    - serverless
+    - sam
+    HomePageUrl: https://github.com/cauzec/emotion-journaling-application
+    SemanticVersion: 1.0.1
+    SourceCodeUrl: https://github.com/cauzec/emotion-journaling-application/tree/main
+    LicenseUrl: s3://sam-app-testing-3/ef55abdc50973e5ec00f992abdd5cd51
+    ReadmeUrl: s3://sam-app-testing-3/eaabb31fc3f0f47433da4878e3a3ebf7
+Parameters:
+  Stage:
+    Type: String
+    Description: The stage where the application is running in, e.g., dev, prod.
+    Default: test
+Resources:
+  Api:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location: https://s3.us-west-2.amazonaws.com/sam-app-testing-3/26607a1e9dd1e601b86fc2137ff373ef.template
+      Parameters:
+        Stage:
+          Ref: Stage
+    DependsOn: Database
+  Database:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location: https://s3.us-west-2.amazonaws.com/sam-app-testing-3/cdf30f2f75badd1742ff8ee415572acc.template
+      Parameters:
+        Stage:
+          Ref: Stage

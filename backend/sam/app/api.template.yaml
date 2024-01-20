@@ -242,20 +242,6 @@ Resources:
       Type: "String"
       Value: !Sub 'arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:${ApiAccessLogGroup}'
       Description: "TherapistApi access log CloudWatch log group ARN"
-  ApiUserPoolUserPoolId:
-    Type: "AWS::SSM::Parameter"
-    Properties:
-      Name: !Sub "/therapists/apprepo/${Stage}/cognito/userpool/TherapistApi/Id"
-      Type: "String"
-      Value: !Ref TherapistApiUserPool
-      Description: "TherapistApi Cognito User Pool ID."
-  ApiUserPoolUserPoolArn:
-    Type: "AWS::SSM::Parameter"
-    Properties:
-      Name: !Sub "/therapists/apprepo/${Stage}/cognito/userpool/TherapistApi/Arn"
-      Type: "String"
-      Value: !GetAtt TherapistApiUserPool.Arn
-      Description: "TherapistApi Cognito User Pool ARN."
   PaginationKeyId:
     Type: "AWS::SSM::Parameter"
     Properties:
