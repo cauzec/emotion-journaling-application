@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="maven-antrun-" default="main">
   <target name="main">
-    <mkdir dir="D:\Study\Coding\AWS\emoj-sam-v1\backend\target/sam/app" />
+    <mkdir dir="C:\Users\theco\Documents\GitHub\emotion-journaling-application\backend\target/sam/app" />
   </target>
 </project>

@@ -56,7 +56,7 @@ Resources:
   ApiLambda:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: '../../target/emotion-journaling-application-backend.jar'
+      CodeUri: '../../target/emotion-journaling-application-backend-1.0.1.jar'
       Handler: 'software.amazon.serverless.apprepo.container.ApiLambdaHandler::handleRequest'
       MemorySize: 1536
       Timeout: 30
