@@ -36,6 +36,14 @@
           "default" : {
             "description" : "Success"
           }
+        },
+        "x-amazon-apigateway-integration" : {
+          "uri" : {
+            "Fn::Sub" : "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2024-01-21/functions/${ApiLambda.Arn}:live/invocations"
+          },
+          "httpMethod" : "POST",
+          "type" : "aws_proxy",
+          "passthroughBehavior" : "never"
         }
       },
       "post" : {
@@ -73,6 +81,14 @@
           "default" : {
             "description" : "Success"
           }
+        },
+        "x-amazon-apigateway-integration" : {
+          "uri" : {
+            "Fn::Sub" : "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2024-01-21/functions/${ApiLambda.Arn}:live/invocations"
+          },
+          "httpMethod" : "POST",
+          "type" : "aws_proxy",
+          "passthroughBehavior" : "never"
         }
       }
     },
@@ -115,6 +131,14 @@
           "default" : {
             "description" : "Success"
           }
+        },
+        "x-amazon-apigateway-integration" : {
+          "uri" : {
+            "Fn::Sub" : "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2024-01-21/functions/${ApiLambda.Arn}:live/invocations"
+          },
+          "httpMethod" : "POST",
+          "type" : "aws_proxy",
+          "passthroughBehavior" : "never"
         }
       },
       "put" : {
@@ -164,6 +188,14 @@
           "default" : {
             "description" : "Success"
           }
+        },
+        "x-amazon-apigateway-integration" : {
+          "uri" : {
+            "Fn::Sub" : "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2024-01-21/functions/${ApiLambda.Arn}:live/invocations"
+          },
+          "httpMethod" : "POST",
+          "type" : "aws_proxy",
+          "passthroughBehavior" : "never"
         }
       },
       "delete" : {
@@ -202,6 +234,14 @@
           "default" : {
             "description" : "Success"
           }
+        },
+        "x-amazon-apigateway-integration" : {
+          "uri" : {
+            "Fn::Sub" : "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2024-01-21/functions/${ApiLambda.Arn}:live/invocations"
+          },
+          "httpMethod" : "POST",
+          "type" : "aws_proxy",
+          "passthroughBehavior" : "never"
         }
       }
     },
@@ -265,6 +305,14 @@
           "default" : {
             "description" : "Success"
           }
+        },
+        "x-amazon-apigateway-integration" : {
+          "uri" : {
+            "Fn::Sub" : "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2024-01-21/functions/${ApiLambda.Arn}:live/invocations"
+          },
+          "httpMethod" : "POST",
+          "type" : "aws_proxy",
+          "passthroughBehavior" : "never"
         }
       }
     }

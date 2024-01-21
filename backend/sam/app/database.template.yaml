@@ -48,28 +48,28 @@ Resources:
   TherapistsTableName:
     Type: "AWS::SSM::Parameter"
     Properties:
-      Name: !Sub "/therapists/apprepo/${Stage}/ddb/Therapists/TableName"
+      Name: !Sub "/therapist/apprepo/${Stage}/ddb/Therapists/TableName"
       Type: "String"
       Value: !Ref Therapists
       Description: "Therapists Table name"
   TherapistsTableArn:
     Type: "AWS::SSM::Parameter"
     Properties:
-      Name: !Sub "/therapists/apprepo/${Stage}/ddb/Therapists/TableArn"
+      Name: !Sub "/therapist/apprepo/${Stage}/ddb/Therapists/TableArn"
       Type: "String"
       Value: !GetAtt Therapists.Arn
       Description: "Therapists Table ARN"
   TherapistsTableStreamArn:
     Type: "AWS::SSM::Parameter"
     Properties:
-      Name: !Sub "/therapists/apprepo/${Stage}/ddb/Therapists/StreamArn"
+      Name: !Sub "/therapist/apprepo/${Stage}/ddb/Therapists/StreamArn"
       Type: "String"
       Value: !GetAtt Therapists.StreamArn
       Description: "Therapists DynamoDB Stream ARN"
   TherapistsTableStreamName:
     Type: "AWS::SSM::Parameter"
     Properties:
-      Name: !Sub "/therapists/apprepo/${Stage}/ddb/Therapists/StreamName"
+      Name: !Sub "/therapist/apprepo/${Stage}/ddb/Therapists/StreamName"
       Type: "String"
       Value:
         !Select

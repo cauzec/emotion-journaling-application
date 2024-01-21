@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
 /**
- * TherapistRecord represents a record in Therapists DynamoDB table.
+ * TherapistRecord represents a record in Therapist DynamoDB table.
  */
 @Data
 @Builder

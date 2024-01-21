@@ -13,7 +13,7 @@ public final class Env {
   }
 
   public static String getSsmConfigKeyPrefix() {
-    return String.format("/therapists/apprepo/%s/", getStage());
+    return String.format("/therapist/apprepo/%s/", getStage());
   }
 
   public static String getRegion() {

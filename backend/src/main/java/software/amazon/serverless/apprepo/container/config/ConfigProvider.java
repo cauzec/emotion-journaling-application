@@ -7,11 +7,11 @@ import java.time.Duration;
  */
 public interface ConfigProvider {
   /**
-   * Get Therapists DynamoDB Table name.
+   * Get Therapist DynamoDB Table name.
    *
    * @return String
    */
-  String getTherapistsTableName();
+  String getTherapistTableName();
 
   /**
    * Get KMS key id.

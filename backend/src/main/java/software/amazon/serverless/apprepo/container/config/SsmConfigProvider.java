@@ -12,7 +12,7 @@ import software.amazon.serverless.ssmcachingclient.SsmParameterCachingClient;
 @RequiredArgsConstructor
 public class SsmConfigProvider implements ConfigProvider {
   private static final Duration DEFAULT_PAGINATION_TOKEN_TTL = Duration.ofHours(1);
-  private static final String THERAPISTS_TABLE_NAME_CONFIG_KEY = "ddb/Therapists/TableName";
+  private static final String THERAPIST_TABLE_NAME_CONFIG_KEY = "ddb/Therapist/TableName";
   private static final String KMS_KEY_ID_CONFIG_KEY = "kms/pagination/KeyId";
   private static final String PAGINATION_TOKEN_TTL_IN_SECONDS_CONFIG_KEY =
         "configuration/pagination/TtlInSeconds";
@@ -20,8 +20,8 @@ public class SsmConfigProvider implements ConfigProvider {
   private final SsmParameterCachingClient ssm;
 
   @Override
-  public String getTherapistsTableName() {
-    return ssm.getAsString(THERAPISTS_TABLE_NAME_CONFIG_KEY);
+  public String getTherapistTableName() {
+    return ssm.getAsString(THERAPIST_TABLE_NAME_CONFIG_KEY);
   }
 
   @Override

@@ -25,7 +25,7 @@ Resources:
     Type: 'AWS::Serverless::Application'
     Properties:
       Location:
-        TherapistId: arn:aws:serverlessrepo:us-east-1:646794253159:therapists/aws-sam-codepipeline-cd
+        TherapistId: arn:aws:serverlessrepo:us-east-1:646794253159:therapist/aws-sam-codepipeline-cd
         SemanticVersion: 0.1.3
       Parameters:
         GitHubOAuthToken: !Sub '{{resolve:secretsmanager:${GitHubOAuthTokenSecretId}}}'
@@ -173,7 +173,7 @@ Resources:
               - ssm:AddTagsToResource
               - ssm:RemoveTagsFromResource
             Resource:
-              - !Sub arn:${AWS::Partition}:ssm:${AWS::Region}:${AWS::AccountId}:parameter/therapists/apprepo/*
+              - !Sub arn:${AWS::Partition}:ssm:${AWS::Region}:${AWS::AccountId}:parameter/therapist/apprepo/*
           - Effect: "Allow"
             Action:
               - cognito-idp:CreateUserPool

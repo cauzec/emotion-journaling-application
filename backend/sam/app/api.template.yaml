@@ -85,9 +85,9 @@ Resources:
           STAGE: !Ref Stage
       Policies:
         - SSMParameterReadPolicy:
-            ParameterName: !Sub "therapists/apprepo/${Stage}/*"
+            ParameterName: !Sub "therapist/apprepo/${Stage}/*"
         - DynamoDBCrudPolicy:
-            TableName: !Sub "{{resolve:ssm:/therapists/apprepo/${Stage}/ddb/Therapists/TableName:1}}"
+            TableName: !Sub "{{resolve:ssm:/therapist/apprepo/${Stage}/ddb/Therapists/TableName:1}}"
         - Version: '2012-10-17'
           Statement:
             - Effect: 'Allow'
@@ -207,91 +207,91 @@ Resources:
   ApiLambdaName:
     Type: "AWS::SSM::Parameter"
     Properties:
-      Name: !Sub "/therapists/apprepo/${Stage}/lambda/ApiLambda/FunctionName"
+      Name: !Sub "/therapist/apprepo/${Stage}/lambda/ApiLambda/FunctionName"
       Type: "String"
       Value: !Ref ApiLambda
       Description: "ApiLambda function name"
   ApiLambdaArn:
     Type: "AWS::SSM::Parameter"
     Properties:
-      Name: !Sub "/therapists/apprepo/${Stage}/lambda/ApiLambda/FunctionArn"
+      Name: !Sub "/therapist/apprepo/${Stage}/lambda/ApiLambda/FunctionArn"
       Type: "String"
       Value: !Ref ApiLambda
       Description: "ApiLambda function ARN"
   ApiLambdaVersion:
     Type: "AWS::SSM::Parameter"
     Properties:
-      Name: !Sub "/therapists/apprepo/${Stage}/lambda/ApiLambda/FunctionVersion"
+      Name: !Sub "/therapist/apprepo/${Stage}/lambda/ApiLambda/FunctionVersion"
       Type: "String"
       Value: !Ref ApiLambda.Version
       Description: "ApiLambda function version for alias live"
   ApiId:
     Type: "AWS::SSM::Parameter"
     Properties:
-      Name: !Sub "/therapists/apprepo/${Stage}/apigateway/TherapistApi/Id"
+      Name: !Sub "/therapist/apprepo/${Stage}/apigateway/TherapistApi/Id"
       Type: "String"
       Value: !Ref TherapistApi
       Description: "TherapistApi Id"
   ApiEndpoint:
     Type: "AWS::SSM::Parameter"
     Properties:
-      Name: !Sub "/therapists/apprepo/${Stage}/apigateway/TherapistApi/Endpoint"
+      Name: !Sub "/therapist/apprepo/${Stage}/apigateway/TherapistApi/Endpoint"
       Type: "String"
       Value: !Sub "https://${TherapistApi}.execute-api.${AWS::Region}.amazonaws.com"
       Description: "TherapistApi endpoint"
   ApiStage:
     Type: "AWS::SSM::Parameter"
     Properties:
-      Name: !Sub "/therapists/apprepo/${Stage}/apigateway/TherapistApi/Stage"
+      Name: !Sub "/therapist/apprepo/${Stage}/apigateway/TherapistApi/Stage"
       Type: "String"
       Value: !Ref TherapistApi.Stage
       Description: "TherapistApi API Gateway stage"
   ApiAccessLogGroupName:
     Type: "AWS::SSM::Parameter"
     Properties:
-      Name: !Sub "/therapists/apprepo/${Stage}/apigateway/TherapistApi/AccessLog/LogGroupName"
+      Name: !Sub "/therapist/apprepo/${Stage}/apigateway/TherapistApi/AccessLog/LogGroupName"
       Type: "String"
       Value: !Ref ApiAccessLogGroup
       Description: "TherapistApi access log CloudWatch log group name"
   ApiAccessLogGroupArn:
     Type: "AWS::SSM::Parameter"
     Properties:
-      Name: !Sub "/therapists/apprepo/${Stage}/apigateway/TherapistApi/AccessLog/LogGroupArn"
+      Name: !Sub "/therapist/apprepo/${Stage}/apigateway/TherapistApi/AccessLog/LogGroupArn"
       Type: "String"
       Value: !Sub 'arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:${ApiAccessLogGroup}'
       Description: "TherapistApi access log CloudWatch log group ARN"
   ApiUserPoolUserPoolId:
     Type: "AWS::SSM::Parameter"
     Properties:
-      Name: !Sub "/therapists/apprepo/${Stage}/cognito/userpool/TherapistApi/Id"
+      Name: !Sub "/therapist/apprepo/${Stage}/cognito/userpool/TherapistApi/Id"
       Type: "String"
       Value: !Ref TherapistApiUserPool
       Description: "TherapistApi Cognito User Pool ID."
   ApiUserPoolUserPoolArn:
     Type: "AWS::SSM::Parameter"
     Properties:
-      Name: !Sub "/therapists/apprepo/${Stage}/cognito/userpool/TherapistApi/Arn"
+      Name: !Sub "/therapist/apprepo/${Stage}/cognito/userpool/TherapistApi/Arn"
       Type: "String"
       Value: !GetAtt TherapistApiUserPool.Arn
       Description: "TherapistApi Cognito User Pool ARN."
   PaginationKeyId:
     Type: "AWS::SSM::Parameter"
     Properties:
-      Name: !Sub "/therapists/apprepo/${Stage}/kms/pagination/KeyId"
+      Name: !Sub "/therapist/apprepo/${Stage}/kms/pagination/KeyId"
       Type: "String"
       Value: !Ref PaginationKey
       Description: "KMS pagination key Id."
   PaginationKeyArn:
     Type: "AWS::SSM::Parameter"
     Properties:
-      Name: !Sub "/therapists/apprepo/${Stage}/kms/pagination/KeyArn"
+      Name: !Sub "/therapist/apprepo/${Stage}/kms/pagination/KeyArn"
       Type: "String"
       Value: !GetAtt PaginationKey.Arn
       Description: "KMS pagination key ARN."
   PaginationTokenTtlInSeconds:
     Type: "AWS::SSM::Parameter"
     Properties:
-      Name: !Sub "/therapists/apprepo/${Stage}/configuration/pagination/TtlInSeconds"
+      Name: !Sub "/therapist/apprepo/${Stage}/configuration/pagination/TtlInSeconds"
       Type: "String"
       Value: 360
       Description: "Pagination token TTL in seconds. The pagination token is used in List APIs."

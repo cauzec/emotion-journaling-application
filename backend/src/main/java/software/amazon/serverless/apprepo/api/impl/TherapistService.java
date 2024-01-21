@@ -45,7 +45,7 @@ import software.amazon.serverless.apprepo.container.config.ConfigProvider;
 @Slf4j
 @RequiredArgsConstructor
 public abstract class TherapistService implements TherapistApi {
-  static final Integer DEFAULT_LIST_THERAPISTS_LIMIT = 10;
+  static final Integer DEFAULT_LIST_THERAPIST_LIMIT = 10;
   private final TokenSerializer<Map<String, AttributeValue>> paginationTokenSerializer;
   private final DynamoDbClient dynamodb;
   private final ModelMapper modelMapper;
@@ -60,7 +60,7 @@ public abstract class TherapistService implements TherapistApi {
         final TokenSerializer<Map<String, AttributeValue>> paginationTokenSerializer,
         final DynamoDbClient dynamodb, final ConfigProvider configProvider) {
     this(paginationTokenSerializer, dynamodb, configureModelMapper(),
-          configProvider.getTherapistsTableName(), Clock.systemUTC());
+          configProvider.getTherapistTableName(), Clock.systemUTC());
   }
 
   public TherapistService(
@@ -68,7 +68,7 @@ public abstract class TherapistService implements TherapistApi {
         final DynamoDbClient dynamodb, final ConfigProvider configProvider,
         final Clock clock) {
     this(paginationTokenSerializer, dynamodb, configureModelMapper(),
-          configProvider.getTherapistsTableName(), clock);
+          configProvider.getTherapistTableName(), clock);
   }
 
   private static ModelMapper configureModelMapper() {
@@ -144,7 +144,7 @@ public abstract class TherapistService implements TherapistApi {
           .keyConditionExpression(String.format("%s = :u",
                 TherapistRecord.USER_ID_ATTRIBUTE_NAME))
           .expressionAttributeValues(expressionAttributeValues)
-          .limit(maxItems == null ? DEFAULT_LIST_THERAPISTS_LIMIT : maxItems);
+          .limit(maxItems == null ? DEFAULT_LIST_THERAPIST_LIMIT : maxItems);
     if (nextToken != null) {
       try {
         requestBuilder.exclusiveStartKey(paginationTokenSerializer.deserialize(nextToken));
@@ -159,7 +159,7 @@ public abstract class TherapistService implements TherapistApi {
           .collect(Collectors.toList());
 
     TherapistList result = new TherapistList()
-          .therapists(therapistSummaries);
+          .Therapist(therapistSummaries);
     Map<String, AttributeValue> lastEvaluatedKey = queryResponse.lastEvaluatedKey();
     if (lastEvaluatedKey != null && !lastEvaluatedKey.isEmpty()) {
       result.nextToken(paginationTokenSerializer.serialize(lastEvaluatedKey));
