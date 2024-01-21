@@ -159,7 +159,7 @@ public abstract class TherapistService implements TherapistApi {
           .collect(Collectors.toList());
 
     TherapistList result = new TherapistList()
-          .Therapist(therapistSummaries);
+          .therapist(therapistSummaries);
     Map<String, AttributeValue> lastEvaluatedKey = queryResponse.lastEvaluatedKey();
     if (lastEvaluatedKey != null && !lastEvaluatedKey.isEmpty()) {
       result.nextToken(paginationTokenSerializer.serialize(lastEvaluatedKey));

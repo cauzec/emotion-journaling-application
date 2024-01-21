@@ -13,25 +13,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 public class TherapistList   {
-  private @Valid List<TherapistSummary> therapists = new ArrayList<TherapistSummary>();
+  private @Valid List<TherapistSummary> therapist = new ArrayList<TherapistSummary>();
   private @Valid String nextToken = null;
 
   /**
    **/
-  public TherapistList therapists(List<TherapistSummary> therapists) {
-    this.therapists = therapists;
+  public TherapistList therapist(List<TherapistSummary> therapist) {
+    this.therapist = therapist;
     return this;
   }
 
   
   @ApiModelProperty(value = "")
-  @JsonProperty("therapists")
+  @JsonProperty("therapist")
 
-  public List<TherapistSummary> getTherapists() {
-    return therapists;
+  public List<TherapistSummary> getTherapist() {
+    return therapist;
   }
-  public void setTherapists(List<TherapistSummary> therapists) {
-    this.therapists = therapists;
+  public void setTherapist(List<TherapistSummary> therapist) {
+    this.therapist = therapist;
   }
 
   /**
@@ -62,13 +62,13 @@ public class TherapistList   {
       return false;
     }
     TherapistList therapistList = (TherapistList) o;
-    return Objects.equals(therapists, therapistList.therapists) &&
+    return Objects.equals(therapist, therapistList.therapist) &&
         Objects.equals(nextToken, therapistList.nextToken);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(therapists, nextToken);
+    return Objects.hash(therapist, nextToken);
   }
 
   @Override
@@ -76,7 +76,7 @@ public class TherapistList   {
     StringBuilder sb = new StringBuilder();
     sb.append("class TherapistList {\n");
     
-    sb.append("    therapists: ").append(toIndentedString(therapists)).append("\n");
+    sb.append("    therapist: ").append(toIndentedString(therapist)).append("\n");
     sb.append("    nextToken: ").append(toIndentedString(nextToken)).append("\n");
     sb.append("}");
     return sb.toString();
