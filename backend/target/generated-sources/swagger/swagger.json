@@ -16,6 +16,27 @@
         "summary" : "Get list of therapists",
         "description" : "Returns the list of therapists",
         "operationId" : "getTherapistList",
+        "parameters" : [ {
+          "name" : "nextToken",
+          "in" : "query",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "maxItems",
+          "in" : "query",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "maximum" : 100,
+            "minimum" : 1,
+            "type" : "integer"
+          }
+        } ],
         "responses" : {
           "211" : {
             "description" : "Successfully returned a list of therapists",
@@ -216,85 +237,7 @@
         } ],
         "responses" : {
           "202" : {
-            "description" : "Successfully added a therapist",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Therapist"
-                }
-              }
-            }
-          },
-          "400" : {
-            "description" : "Bad Request"
-          },
-          "500" : {
-            "description" : "Internal Server Error"
-          },
-          "default" : {
-            "description" : "Success"
-          }
-        },
-        "x-amazon-apigateway-integration" : {
-          "uri" : {
-            "Fn::Sub" : "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2024-01-21/functions/${ApiLambda.Arn}:live/invocations"
-          },
-          "httpMethod" : "POST",
-          "type" : "aws_proxy",
-          "passthroughBehavior" : "never"
-        }
-      }
-    },
-    "/therapist/search" : {
-      "summary" : "Operations on searching a therapist by name",
-      "description" : "Contains the list of operations for clients to search therapists by their name",
-      "get" : {
-        "tags" : [ "Therapist" ],
-        "summary" : "Get details of therapist name given by the client",
-        "description" : "Returns the details of the therapist name given by client",
-        "operationId" : "getTherapistByName",
-        "parameters" : [ {
-          "name" : "therapistName",
-          "in" : "query",
-          "description" : "Name of therapist being searched",
-          "required" : false,
-          "style" : "form",
-          "explode" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "name" : "therapistArea",
-          "in" : "query",
-          "description" : "Area of therapist being searched",
-          "required" : false,
-          "style" : "form",
-          "explode" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "name" : "therapistType",
-          "in" : "query",
-          "description" : "Type of therapist being searched",
-          "required" : false,
-          "style" : "form",
-          "explode" : true,
-          "schema" : {
-            "type" : "string",
-            "enum" : [ "Psychologist", "Psychiatrist", "Counsellor" ]
-          }
-        } ],
-        "responses" : {
-          "211" : {
-            "description" : "Successfully returned a list of therapists",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/TherapistList"
-                }
-              }
-            }
+            "description" : "Successfully delete an application"
           },
           "400" : {
             "description" : "Bad Request"

@@ -37,6 +37,19 @@ paths:
       summary: Get list of therapists
       description: Returns the list of therapists
       operationId: getTherapistList
+      parameters:
+        - name: nextToken
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: maxItems
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
       responses:
         '211' :
           $ref: '#/components/responses/211TherapistListResponse'
@@ -166,7 +179,7 @@ paths:
             type: string
       responses:
         '202' :
-          $ref: '#/components/responses/202TherapistResponse'
+          description: "Successfully delete an application"
         '400':
           $ref: '#/components/responses/400Response'
         '500':
@@ -179,51 +192,6 @@ paths:
         httpMethod: POST
         type: aws_proxy
         passthroughBehavior: never
-  /therapist/search:
-    summary: Operations on searching a therapist by name
-    description: Contains the list of operations for clients to search therapists by their name
-    get:
-      tags:
-        - Therapist
-      summary: Get details of therapist name given by the client
-      description: Returns the details of the therapist name given by client
-      operationId: getTherapistByName
-      parameters: 
-        - name: therapistName
-          in: query
-          description: Name of therapist being searched
-          schema:
-            type: string
-        - name: therapistArea
-          in: query
-          description: Area of therapist being searched
-          schema:
-            type: string
-        - name: therapistType
-          in: query
-          description: Type of therapist being searched
-          schema:
-            type: string
-            enum:
-              - Psychologist
-              - Psychiatrist
-              - Counsellor
-      responses:
-        '211' :
-          $ref: '#/components/responses/211TherapistListResponse'
-        '400':
-          $ref: '#/components/responses/400Response'
-        '500':
-          $ref: '#/components/responses/500Response'
-        default:
-          description: Success
-      x-amazon-apigateway-integration:
-        uri:
-          Fn::Sub: arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2024-01-21/functions/${ApiLambda.Arn}:live/invocations
-        httpMethod: POST
-        type: aws_proxy
-        passthroughBehavior: never
-
 
 components:
   schemas:

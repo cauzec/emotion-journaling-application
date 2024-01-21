@@ -166,7 +166,7 @@ public class TherapistService implements TherapistApi {
     }
     return result;
   }
-  
+
   public Therapist updateTherapist(final Therapist therapist,
                                        final String therapistId) {
     log.info("Updating therapist {} with input {}", therapistId, therapist);

@@ -22,7 +22,7 @@ import javax.validation.Valid;
 
 @Path("/therapist")
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJAXRSSpecServerCodegen", date = "2024-01-21T16:52:03.377+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJAXRSSpecServerCodegen", date = "2024-01-21T17:30:59.620+05:30[Asia/Calcutta]")
 public interface TherapistApi {
 
     @POST
@@ -37,14 +37,13 @@ public interface TherapistApi {
     Therapist addTherapist(@Valid Therapist body);
     @DELETE
     @Path("/{therapistId}")
-    @Produces({ "application/json" })
     @Operation(summary = "Deletes the details of a therapist", description = "Deletes the details of the given therapist Id", tags={ "Therapist" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "202", description = "Successfully added a therapist", content = @Content(schema = @Schema(implementation = Therapist.class))),
+        @ApiResponse(responseCode = "202", description = "Successfully delete an application"),
         @ApiResponse(responseCode = "400", description = "Bad Request"),
         @ApiResponse(responseCode = "500", description = "Internal Server Error"),
         @ApiResponse(responseCode = "200", description = "Success") })
-    Therapist deleteTherapist( @PathParam("therapistId")
+    void deleteTherapist( @PathParam("therapistId")
 
  @Parameter(description = "The unique therapist ID") String therapistId
 );
@@ -62,25 +61,6 @@ public interface TherapistApi {
  @Parameter(description = "The unique therapist ID") String therapistId
 );
     @GET
-    @Path("/search")
-    @Produces({ "application/json" })
-    @Operation(summary = "Get details of therapist name given by the client", description = "Returns the details of the therapist name given by client", tags={ "Therapist" })
-    @ApiResponses(value = { 
-        @ApiResponse(responseCode = "211", description = "Successfully returned a list of therapists", content = @Content(schema = @Schema(implementation = TherapistList.class))),
-        @ApiResponse(responseCode = "400", description = "Bad Request"),
-        @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-        @ApiResponse(responseCode = "200", description = "Success") })
-    TherapistList getTherapistByName(  @QueryParam("therapistName") 
-
- @Parameter(description = "Name of therapist being searched")  String therapistName
-,  @QueryParam("therapistArea") 
-
- @Parameter(description = "Area of therapist being searched")  String therapistArea
-,  @QueryParam("therapistType") 
-
- @Parameter(description = "Type of therapist being searched")  String therapistType
-);
-    @GET
     @Produces({ "application/json" })
     @Operation(summary = "Get list of therapists", description = "Returns the list of therapists", tags={ "Therapist" })
     @ApiResponses(value = { 
@@ -88,7 +68,13 @@ public interface TherapistApi {
         @ApiResponse(responseCode = "400", description = "Bad Request"),
         @ApiResponse(responseCode = "500", description = "Internal Server Error"),
         @ApiResponse(responseCode = "200", description = "Success") })
-    TherapistList getTherapistList();
+    TherapistList getTherapistList(  @QueryParam("nextToken") 
+
+  String nextToken
+, @Min(1) @Max(100)  @QueryParam("maxItems") 
+
+  Integer maxItems
+);
     @PUT
     @Path("/{therapistId}")
     @Consumes({ "application/json" })
