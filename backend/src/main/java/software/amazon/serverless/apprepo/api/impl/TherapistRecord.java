@@ -34,7 +34,7 @@ public class TherapistRecord {
   private String therapistArea;
   private String therapistType;
   private Long version;
-  private Long therapistMob;
+  private String therapistMob;
 
   /**
    * Construct the record from a map of DynamoDB {@link AttributeValue}.
@@ -61,7 +61,7 @@ public class TherapistRecord {
       this.therapistArea = record.get(THERAPIST_AREA_ATTRIBUTE_NAME).s();
     }
     if (record.containsKey(THERAPIST_MOBILE_ATTRIBUTE_NAME)) {
-      this.therapistMob = Long.parseLong(record.get(THERAPIST_MOBILE_ATTRIBUTE_NAME).n());
+      this.therapistMob = record.get(THERAPIST_MOBILE_ATTRIBUTE_NAME).s();
     }
     if (record.containsKey(VERSION_ATTRIBUTE_NAME)) {
       this.version = Long.parseLong(record.get(VERSION_ATTRIBUTE_NAME).n());
@@ -100,7 +100,7 @@ public class TherapistRecord {
     }
     if (therapistMob != null) {
       therapistMap.put(THERAPIST_MOBILE_ATTRIBUTE_NAME,
-            AttributeValue.builder().n(therapistMob.toString()).build());
+            AttributeValue.builder().s(therapistMob).build());
     }
     if (version != null) {
       therapistMap.put(VERSION_ATTRIBUTE_NAME,

@@ -247,7 +247,7 @@ components:
         creationTime:
           type: string
         therapistMob:
-          type: number
+          type: string
           description: Mobile number of the therapist
         therapistArea:
           type: string
@@ -276,7 +276,7 @@ components:
           type: string
           description: Name of the therapist
         therapistMob:
-          type: number
+          type: string
           description: Mobile number of the therapist
         therapistArea:
           type: string

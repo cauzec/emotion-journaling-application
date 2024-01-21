@@ -44,7 +44,7 @@ import software.amazon.serverless.apprepo.container.config.ConfigProvider;
  */
 @Slf4j
 @RequiredArgsConstructor
-public abstract class TherapistService implements TherapistApi {
+public class TherapistService implements TherapistApi {
   static final Integer DEFAULT_LIST_THERAPIST_LIMIT = 10;
   private final TokenSerializer<Map<String, AttributeValue>> paginationTokenSerializer;
   private final DynamoDbClient dynamodb;
@@ -92,9 +92,9 @@ public abstract class TherapistService implements TherapistApi {
     return modelMapper;
   }
 
-  public Therapist addTherapist(final Therapist createTherapistInput) {
-    log.info("Creating therapist with input {}", createTherapistInput);
-    TherapistRecord therapistRecord = modelMapper.map(createTherapistInput,
+  public Therapist addTherapist(final Therapist therapist) {
+    log.info("Creating therapist with input {}", therapist);
+    TherapistRecord therapistRecord = modelMapper.map(therapist,
           TherapistRecord.class);
     therapistRecord.setCreatedAt(Instant.now(clock));
     therapistRecord.setVersion(1L);
@@ -167,15 +167,15 @@ public abstract class TherapistService implements TherapistApi {
     return result;
   }
   
-  public Therapist updateTherapist(final Therapist updateTherapistInput,
+  public Therapist updateTherapist(final Therapist therapist,
                                        final String therapistId) {
-    log.info("Updating therapist {} with input {}", therapistId, updateTherapistInput);
+    log.info("Updating therapist {} with input {}", therapistId, therapist);
 
     TherapistRecord therapistRecord = loadTherapist(therapistId);
     Map<String, AttributeValue> expressionAttributeValues = new HashMap<>();
-    String therapistName = updateTherapistInput.getTherapistName();
-    String therapistType = updateTherapistInput.getTherapistType();
-    String therapistArea = updateTherapistInput.getTherapistArea();
+    String therapistName = therapist.getTherapistName();
+    String therapistType = therapist.getTherapistType();
+    String therapistArea = therapist.getTherapistArea();
     List<String> updateExpressionList = new ArrayList<>();
     if (therapistName != null) {
       therapistRecord.setTherapistName(therapistName);
