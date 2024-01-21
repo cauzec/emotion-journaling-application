@@ -27,10 +27,10 @@
               }
             }
           },
-          "4XX" : {
+          "400" : {
             "description" : "Bad Request"
           },
-          "5XX" : {
+          "500" : {
             "description" : "Internal Server Error"
           },
           "default" : {
@@ -65,19 +65,9 @@
             }
           },
           "400" : {
-            "description" : "Bad Request Exception",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/BadRequestException"
-                }
-              }
-            }
-          },
-          "4XX" : {
             "description" : "Bad Request"
           },
-          "5XX" : {
+          "500" : {
             "description" : "Internal Server Error"
           },
           "default" : {
@@ -116,10 +106,10 @@
               }
             }
           },
-          "4XX" : {
+          "400" : {
             "description" : "Bad Request"
           },
-          "5XX" : {
+          "500" : {
             "description" : "Internal Server Error"
           },
           "default" : {
@@ -165,10 +155,10 @@
               }
             }
           },
-          "4XX" : {
+          "400" : {
             "description" : "Bad Request"
           },
-          "5XX" : {
+          "500" : {
             "description" : "Internal Server Error"
           },
           "default" : {
@@ -203,10 +193,10 @@
               }
             }
           },
-          "4XX" : {
+          "400" : {
             "description" : "Bad Request"
           },
-          "5XX" : {
+          "500" : {
             "description" : "Internal Server Error"
           },
           "default" : {
@@ -266,10 +256,10 @@
               }
             }
           },
-          "4XX" : {
+          "400" : {
             "description" : "Bad Request"
           },
-          "5XX" : {
+          "500" : {
             "description" : "Internal Server Error"
           },
           "default" : {
@@ -428,19 +418,9 @@
         }
       },
       "400Response" : {
-        "description" : "Bad Request Exception",
-        "content" : {
-          "application/json" : {
-            "schema" : {
-              "$ref" : "#/components/schemas/BadRequestException"
-            }
-          }
-        }
-      },
-      "4XXResponse" : {
         "description" : "Bad Request"
       },
-      "5XXResponse" : {
+      "500Response" : {
         "description" : "Internal Server Error"
       }
     }

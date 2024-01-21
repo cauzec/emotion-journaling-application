@@ -46,6 +46,12 @@ paths:
           $ref: '#/components/responses/500Response'
         default:
           description: Success
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2024-01-21/functions/${ApiLambda.Arn}:live/invocations
+        httpMethod: POST
+        type: aws_proxy
+        passthroughBehavior: never
     post:
       tags:
         - Therapist
@@ -73,6 +79,12 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Therapist'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2024-01-21/functions/${ApiLambda.Arn}:live/invocations
+        httpMethod: POST
+        type: aws_proxy
+        passthroughBehavior: never
   /therapist/{therapistId}:
     summary: Operations on a particular therapist
     description: Contains the list of operations on a therapist given in the therapistId
@@ -98,6 +110,12 @@ paths:
           $ref: '#/components/responses/500Response'
         default:
           description: Success
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2024-01-21/functions/${ApiLambda.Arn}:live/invocations
+        httpMethod: POST
+        type: aws_proxy
+        passthroughBehavior: never
     put:
       tags:
         - Therapist
@@ -127,6 +145,12 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Therapist'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2024-01-21/functions/${ApiLambda.Arn}:live/invocations
+        httpMethod: POST
+        type: aws_proxy
+        passthroughBehavior: never
     delete:
       tags:
         - Therapist
@@ -149,6 +173,12 @@ paths:
           $ref: '#/components/responses/500Response'
         default:
           description: Success
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2024-01-21/functions/${ApiLambda.Arn}:live/invocations
+        httpMethod: POST
+        type: aws_proxy
+        passthroughBehavior: never
   /therapist/search:
     summary: Operations on searching a therapist by name
     description: Contains the list of operations for clients to search therapists by their name
@@ -187,6 +217,12 @@ paths:
           $ref: '#/components/responses/500Response'
         default:
           description: Success
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2024-01-21/functions/${ApiLambda.Arn}:live/invocations
+        httpMethod: POST
+        type: aws_proxy
+        passthroughBehavior: never
 
 
 components:

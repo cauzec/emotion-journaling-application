@@ -1,6 +1,5 @@
 package io.swagger.api;
 
-import io.swagger.model.BadRequestException;
 import java.math.BigDecimal;
 import io.swagger.model.Therapist;
 import io.swagger.model.TherapistList;
@@ -24,7 +23,7 @@ import javax.validation.Valid;
 
 @Path("/therapist")
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJAXRSSpecServerCodegen", date = "2024-01-20T19:12:08.428+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJAXRSSpecServerCodegen", date = "2024-01-21T10:24:15.330+05:30[Asia/Calcutta]")
 public interface TherapistApi {
 
     @POST
@@ -33,9 +32,8 @@ public interface TherapistApi {
     @Operation(summary = "Add a new therapist", description = "Adds a new therapist and returns the added therapist", tags={ "Therapist" })
     @ApiResponses(value = { 
         @ApiResponse(responseCode = "202", description = "Successfully added a therapist", content = @Content(schema = @Schema(implementation = Therapist.class))),
-        @ApiResponse(responseCode = "400", description = "Bad Request Exception", content = @Content(schema = @Schema(implementation = BadRequestException.class))),
-        @ApiResponse(responseCode = "4XX", description = "Bad Request"),
-        @ApiResponse(responseCode = "5XX", description = "Internal Server Error"),
+        @ApiResponse(responseCode = "400", description = "Bad Request"),
+        @ApiResponse(responseCode = "500", description = "Internal Server Error"),
         @ApiResponse(responseCode = "200", description = "Success") })
     Therapist addTherapist(@Valid Therapist body);
     @DELETE
@@ -44,8 +42,8 @@ public interface TherapistApi {
     @Operation(summary = "Deletes the details of a therapist", description = "Deletes the details of the given therapist Id", tags={ "Therapist" })
     @ApiResponses(value = { 
         @ApiResponse(responseCode = "202", description = "Successfully added a therapist", content = @Content(schema = @Schema(implementation = Therapist.class))),
-        @ApiResponse(responseCode = "4XX", description = "Bad Request"),
-        @ApiResponse(responseCode = "5XX", description = "Internal Server Error"),
+        @ApiResponse(responseCode = "400", description = "Bad Request"),
+        @ApiResponse(responseCode = "500", description = "Internal Server Error"),
         @ApiResponse(responseCode = "200", description = "Success") })
     Therapist deleteTherapist( @PathParam("therapistId")
 
@@ -57,8 +55,8 @@ public interface TherapistApi {
     @Operation(summary = "Get details of a single therapist", description = "Returns the details of the given therapistId", tags={ "Therapist" })
     @ApiResponses(value = { 
         @ApiResponse(responseCode = "202", description = "Successfully added a therapist", content = @Content(schema = @Schema(implementation = Therapist.class))),
-        @ApiResponse(responseCode = "4XX", description = "Bad Request"),
-        @ApiResponse(responseCode = "5XX", description = "Internal Server Error"),
+        @ApiResponse(responseCode = "400", description = "Bad Request"),
+        @ApiResponse(responseCode = "500", description = "Internal Server Error"),
         @ApiResponse(responseCode = "200", description = "Success") })
     Therapist getTherapist( @PathParam("therapistId")
 
@@ -70,8 +68,8 @@ public interface TherapistApi {
     @Operation(summary = "Get details of therapist name given by the client", description = "Returns the details of the therapist name given by client", tags={ "Therapist" })
     @ApiResponses(value = { 
         @ApiResponse(responseCode = "211", description = "Successfully returned a list of therapists", content = @Content(schema = @Schema(implementation = TherapistList.class))),
-        @ApiResponse(responseCode = "4XX", description = "Bad Request"),
-        @ApiResponse(responseCode = "5XX", description = "Internal Server Error"),
+        @ApiResponse(responseCode = "400", description = "Bad Request"),
+        @ApiResponse(responseCode = "500", description = "Internal Server Error"),
         @ApiResponse(responseCode = "200", description = "Success") })
     TherapistList getTherapistByName(  @QueryParam("therapistName") 
 
@@ -88,8 +86,8 @@ public interface TherapistApi {
     @Operation(summary = "Get list of therapists", description = "Returns the list of therapists", tags={ "Therapist" })
     @ApiResponses(value = { 
         @ApiResponse(responseCode = "211", description = "Successfully returned a list of therapists", content = @Content(schema = @Schema(implementation = TherapistList.class))),
-        @ApiResponse(responseCode = "4XX", description = "Bad Request"),
-        @ApiResponse(responseCode = "5XX", description = "Internal Server Error"),
+        @ApiResponse(responseCode = "400", description = "Bad Request"),
+        @ApiResponse(responseCode = "500", description = "Internal Server Error"),
         @ApiResponse(responseCode = "200", description = "Success") })
     TherapistList getTherapistList();
     @PUT
@@ -99,8 +97,8 @@ public interface TherapistApi {
     @Operation(summary = "Update the details of a therapist", description = "Updates the details of the given therapist Id", tags={ "Therapist" })
     @ApiResponses(value = { 
         @ApiResponse(responseCode = "202", description = "Successfully added a therapist", content = @Content(schema = @Schema(implementation = Therapist.class))),
-        @ApiResponse(responseCode = "4XX", description = "Bad Request"),
-        @ApiResponse(responseCode = "5XX", description = "Internal Server Error"),
+        @ApiResponse(responseCode = "400", description = "Bad Request"),
+        @ApiResponse(responseCode = "500", description = "Internal Server Error"),
         @ApiResponse(responseCode = "200", description = "Success") })
     Therapist updateTherapist(@Valid Therapist body, @PathParam("therapistId")
 

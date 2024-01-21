@@ -13,7 +13,7 @@ Metadata:
     Labels: [github, serverless, sam]
     HomePageUrl: https://github.com/cauzec/emotion-journaling-application
     SemanticVersion: 1.0.1
-    SourceCodeUrl: https://github.com/cauzec/emotion-journaling-application/tree/main
+    SourceCodeUrl: https://github.com/cauzec/emotion-journaling-application/tree
     LicenseUrl: ../../../LICENSE
     ReadmeUrl: ../../README.md
 
@@ -52,6 +52,24 @@ Resources:
       Cors:
         AllowOrigin: "'*'"
         AllowHeaders: "'authorization, content-type'"
+
+  TherapistApiUserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 8
+          RequireLowercase: true
+          RequireNumbers: true
+          TemporaryPasswordValidityDays: 1
+      UsernameAttributes:
+        - email
+      AutoVerifiedAttributes:
+        - email
+      Schema:
+        - AttributeDataType: String
+          Name: email
+          Mutable: false
 
   ApiLambda:
     Type: AWS::Serverless::Function
@@ -135,7 +153,7 @@ Resources:
       LogGroupName: !Sub /aws/apigateway/AccessLog-${TherapistApi}
       RetentionInDays: 3653
 
-  # Alarms used in canary deployment for Applications API.
+  # Alarms used in canary deployment for Therapist API.
   ApiAvailability:
     Type: 'AWS::CloudWatch::Alarm'
     Properties:
@@ -242,6 +260,20 @@ Resources:
       Type: "String"
       Value: !Sub 'arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:${ApiAccessLogGroup}'
       Description: "TherapistApi access log CloudWatch log group ARN"
+  ApiUserPoolUserPoolId:
+    Type: "AWS::SSM::Parameter"
+    Properties:
+      Name: !Sub "/therapists/apprepo/${Stage}/cognito/userpool/TherapistApi/Id"
+      Type: "String"
+      Value: !Ref TherapistApiUserPool
+      Description: "TherapistApi Cognito User Pool ID."
+  ApiUserPoolUserPoolArn:
+    Type: "AWS::SSM::Parameter"
+    Properties:
+      Name: !Sub "/therapists/apprepo/${Stage}/cognito/userpool/TherapistApi/Arn"
+      Type: "String"
+      Value: !GetAtt TherapistApiUserPool.Arn
+      Description: "TherapistApi Cognito User Pool ARN."
   PaginationKeyId:
     Type: "AWS::SSM::Parameter"
     Properties:
