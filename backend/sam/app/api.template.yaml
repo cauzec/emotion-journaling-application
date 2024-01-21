@@ -87,7 +87,7 @@ Resources:
         - SSMParameterReadPolicy:
             ParameterName: !Sub "therapist/apprepo/${Stage}/*"
         - DynamoDBCrudPolicy:
-            TableName: !Sub "{{resolve:ssm:/therapist/apprepo/${Stage}/ddb/Therapists/TableName:1}}"
+            TableName: !Sub "{{resolve:ssm:/therapist/apprepo/${Stage}/ddb/Therapist/TableName:1}}"
         - Version: '2012-10-17'
           Statement:
             - Effect: 'Allow'

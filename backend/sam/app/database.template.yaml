@@ -22,7 +22,7 @@ Parameters:
     Type: String
     Description: The stage where the application is running in, e.g., dev, prod.
 Resources:
-  Therapists:
+  Therapist:
     Type: 'AWS::DynamoDB::Table'
     Properties:
       AttributeDefinitions:
@@ -45,31 +45,31 @@ Resources:
         PointInTimeRecoveryEnabled: true
 
   # Storing resources names to SSM
-  TherapistsTableName:
+  TherapistTableName:
     Type: "AWS::SSM::Parameter"
     Properties:
-      Name: !Sub "/therapist/apprepo/${Stage}/ddb/Therapists/TableName"
+      Name: !Sub "/therapist/apprepo/${Stage}/ddb/Therapist/TableName"
       Type: "String"
-      Value: !Ref Therapists
-      Description: "Therapists Table name"
-  TherapistsTableArn:
+      Value: !Ref Therapist
+      Description: "Therapist Table name"
+  TherapistTableArn:
     Type: "AWS::SSM::Parameter"
     Properties:
-      Name: !Sub "/therapist/apprepo/${Stage}/ddb/Therapists/TableArn"
+      Name: !Sub "/therapist/apprepo/${Stage}/ddb/Therapist/TableArn"
       Type: "String"
-      Value: !GetAtt Therapists.Arn
-      Description: "Therapists Table ARN"
-  TherapistsTableStreamArn:
+      Value: !GetAtt Therapist.Arn
+      Description: "Therapist Table ARN"
+  TherapistTableStreamArn:
     Type: "AWS::SSM::Parameter"
     Properties:
-      Name: !Sub "/therapist/apprepo/${Stage}/ddb/Therapists/StreamArn"
+      Name: !Sub "/therapist/apprepo/${Stage}/ddb/Therapist/StreamArn"
       Type: "String"
-      Value: !GetAtt Therapists.StreamArn
-      Description: "Therapists DynamoDB Stream ARN"
-  TherapistsTableStreamName:
+      Value: !GetAtt Therapist.StreamArn
+      Description: "Therapist DynamoDB Stream ARN"
+  TherapistTableStreamName:
     Type: "AWS::SSM::Parameter"
     Properties:
-      Name: !Sub "/therapist/apprepo/${Stage}/ddb/Therapists/StreamName"
+      Name: !Sub "/therapist/apprepo/${Stage}/ddb/Therapist/StreamName"
       Type: "String"
       Value:
         !Select
@@ -78,5 +78,5 @@ Resources:
             - '/'
             - !Select
               - 5
-              - !Split [':', !GetAtt Therapists.StreamArn]
-      Description: "Therapists DynamoDB Stream name"
+              - !Split [':', !GetAtt Therapist.StreamArn]
+      Description: "Therapist DynamoDB Stream name"
