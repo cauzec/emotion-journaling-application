@@ -131,7 +131,7 @@ public class TherapistService implements TherapistApi {
     return modelMapper.map(therapistRecord, Therapist.class);
   }
 
-  public TherapistList listTherapist(final String nextToken, final Integer maxItems) {
+  public TherapistList getTherapistList(final String nextToken, final Integer maxItems) {
     log.info("Listing therapists with nextToken {} and maxItems {}", nextToken, maxItems);
     Map<String, AttributeValue> expressionAttributeValues = new HashMap<>();
     expressionAttributeValues.put(":u", AttributeValue.builder()

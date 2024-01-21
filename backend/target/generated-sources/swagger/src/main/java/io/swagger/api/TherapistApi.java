@@ -1,6 +1,5 @@
 package io.swagger.api;
 
-import java.math.BigDecimal;
 import io.swagger.model.Therapist;
 import io.swagger.model.TherapistList;
 
@@ -23,7 +22,7 @@ import javax.validation.Valid;
 
 @Path("/therapist")
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJAXRSSpecServerCodegen", date = "2024-01-21T16:49:53.216+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJAXRSSpecServerCodegen", date = "2024-01-21T16:52:03.377+05:30[Asia/Calcutta]")
 public interface TherapistApi {
 
     @POST
@@ -47,7 +46,7 @@ public interface TherapistApi {
         @ApiResponse(responseCode = "200", description = "Success") })
     Therapist deleteTherapist( @PathParam("therapistId")
 
- @Parameter(description = "The unique therapist ID") BigDecimal therapistId
+ @Parameter(description = "The unique therapist ID") String therapistId
 );
     @GET
     @Path("/{therapistId}")
@@ -60,7 +59,7 @@ public interface TherapistApi {
         @ApiResponse(responseCode = "200", description = "Success") })
     Therapist getTherapist( @PathParam("therapistId")
 
- @Parameter(description = "The unique therapist ID") BigDecimal therapistId
+ @Parameter(description = "The unique therapist ID") String therapistId
 );
     @GET
     @Path("/search")
@@ -102,5 +101,5 @@ public interface TherapistApi {
         @ApiResponse(responseCode = "200", description = "Success") })
     Therapist updateTherapist(@Valid Therapist body, @PathParam("therapistId")
 
- @Parameter(description = "The unique therapist ID") BigDecimal therapistId
+ @Parameter(description = "The unique therapist ID") String therapistId
 );}
