@@ -289,7 +289,7 @@ components:
     TherapistList:
       type: object
       properties:
-        therapists:
+        therapist:
           type: array
           items:
             $ref: "#/components/schemas/TherapistSummary"
