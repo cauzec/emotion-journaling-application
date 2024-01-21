@@ -1,7 +1,6 @@
 package io.swagger.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.math.BigDecimal;
 import javax.validation.constraints.*;
 import javax.validation.Valid;
 
@@ -17,7 +16,7 @@ public class Therapist   {
   private @Valid String therapistId = null;
   private @Valid String therapistName = null;
   private @Valid String creationTime = null;
-  private @Valid BigDecimal therapistMob = null;
+  private @Valid String therapistMob = null;
   private @Valid String therapistArea = null;
   private @Valid String therapistType = null;
 
@@ -81,7 +80,7 @@ public class Therapist   {
   /**
    * Mobile number of the therapist
    **/
-  public Therapist therapistMob(BigDecimal therapistMob) {
+  public Therapist therapistMob(String therapistMob) {
     this.therapistMob = therapistMob;
     return this;
   }
@@ -91,10 +90,10 @@ public class Therapist   {
   @JsonProperty("therapistMob")
   @NotNull
 
-  public BigDecimal getTherapistMob() {
+  public String getTherapistMob() {
     return therapistMob;
   }
-  public void setTherapistMob(BigDecimal therapistMob) {
+  public void setTherapistMob(String therapistMob) {
     this.therapistMob = therapistMob;
   }
 

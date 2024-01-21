@@ -1,6 +1,5 @@
 package io.swagger.model;
 
-import java.math.BigDecimal;
 import javax.validation.constraints.*;
 import javax.validation.Valid;
 
@@ -13,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class TherapistSummary   {
   private @Valid String therapistId = null;
   private @Valid String therapistName = null;
-  private @Valid BigDecimal therapistMob = null;
+  private @Valid String therapistMob = null;
   private @Valid String therapistArea = null;
   private @Valid String therapistType = null;
   private @Valid String creationTime = null;
@@ -59,7 +58,7 @@ public class TherapistSummary   {
   /**
    * Mobile number of the therapist
    **/
-  public TherapistSummary therapistMob(BigDecimal therapistMob) {
+  public TherapistSummary therapistMob(String therapistMob) {
     this.therapistMob = therapistMob;
     return this;
   }
@@ -68,10 +67,10 @@ public class TherapistSummary   {
   @ApiModelProperty(value = "Mobile number of the therapist")
   @JsonProperty("therapistMob")
 
-  public BigDecimal getTherapistMob() {
+  public String getTherapistMob() {
     return therapistMob;
   }
-  public void setTherapistMob(BigDecimal therapistMob) {
+  public void setTherapistMob(String therapistMob) {
     this.therapistMob = therapistMob;
   }
 

@@ -100,7 +100,7 @@ paths:
           description: The unique therapist ID
           required: true
           schema:
-            type: number
+            type: string
       responses:
         '202' :
           $ref: '#/components/responses/202TherapistResponse'
@@ -128,7 +128,7 @@ paths:
           description: The unique therapist ID
           required: true
           schema:
-            type: number
+            type: string
       responses:
         '202' :
           $ref: '#/components/responses/202TherapistResponse'
@@ -163,7 +163,7 @@ paths:
           description: The unique therapist ID
           required: true
           schema:
-            type: number
+            type: string
       responses:
         '202' :
           $ref: '#/components/responses/202TherapistResponse'
