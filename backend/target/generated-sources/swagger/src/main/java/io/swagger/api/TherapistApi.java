@@ -22,7 +22,7 @@ import javax.validation.Valid;
 
 @Path("/therapist")
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJAXRSSpecServerCodegen", date = "2024-01-21T17:54:57.787+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJAXRSSpecServerCodegen", date = "2024-01-22T08:08:29.566+05:30[Asia/Calcutta]")
 public interface TherapistApi {
 
     @POST

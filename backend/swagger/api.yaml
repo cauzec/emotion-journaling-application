@@ -61,7 +61,7 @@ paths:
           description: Success
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2024-01-21/functions/${ApiLambda.Arn}:live/invocations
+          Fn::Sub: arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ApiLambda.Arn}:live/invocations
         httpMethod: POST
         type: aws_proxy
         passthroughBehavior: never
@@ -94,7 +94,7 @@ paths:
               $ref: '#/components/schemas/Therapist'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2024-01-21/functions/${ApiLambda.Arn}:live/invocations
+          Fn::Sub: arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ApiLambda.Arn}:live/invocations
         httpMethod: POST
         type: aws_proxy
         passthroughBehavior: never
@@ -125,7 +125,7 @@ paths:
           description: Success
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2024-01-21/functions/${ApiLambda.Arn}:live/invocations
+          Fn::Sub: arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ApiLambda.Arn}:live/invocations
         httpMethod: POST
         type: aws_proxy
         passthroughBehavior: never
@@ -160,7 +160,7 @@ paths:
               $ref: '#/components/schemas/Therapist'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2024-01-21/functions/${ApiLambda.Arn}:live/invocations
+          Fn::Sub: arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ApiLambda.Arn}:live/invocations
         httpMethod: POST
         type: aws_proxy
         passthroughBehavior: never
@@ -188,7 +188,7 @@ paths:
           description: Success
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2024-01-21/functions/${ApiLambda.Arn}:live/invocations
+          Fn::Sub: arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ApiLambda.Arn}:live/invocations
         httpMethod: POST
         type: aws_proxy
         passthroughBehavior: never
