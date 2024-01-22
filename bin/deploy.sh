@@ -12,7 +12,7 @@ usage() {
     echo "Usage:"
     echo "    deploy.sh -n <stack-name> -t <template> [-o <parameter-overrides>]     Deploy SAM template."
     echo "Example:"
-    echo "    deploy.sh -n realworld-serverless-application-backend-prod -t backend/target/sam/app/packaged-template.yaml -o \"Stage=prod\""
+    echo "    deploy.sh -n emotion-journaling-application-backend-prod -t backend/target/sam/app/packaged-template.yaml -o \"Stage=prod\""
 }
 
 arg_parse() {
