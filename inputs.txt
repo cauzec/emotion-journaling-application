@@ -1,0 +1,29 @@
+{
+    "therapistId": "1",
+    "therapistName": "Dr. Prateek Gupta",
+    "therapistMob": "9785462130",
+    "therapistArea": "226029",
+    "therapistType": "Counsellor",
+}
+{
+    "therapistId": "2",
+    "therapistName": "Dr. Anurag Gupta",
+    "therapistMob": "9785462130",
+    "therapistArea": "560047",
+    "therapistType": "Psychologist"
+}
+
+{
+    "therapistId": "3",
+    "therapistName": "Dr. Raj Mishra",
+    "therapistMob": "9378561247",
+    "therapistArea": "226029",
+    "therapistType": "Counsellor"
+}
+{
+    "therapistId": "4",
+    "therapistName": "Dr. Dharmendar Ji",
+    "therapistMob": "9378561247",
+    "therapistArea": "226029",
+    "therapistType": "Counsellor"
+}
