@@ -3,7 +3,7 @@
     "therapistName": "Dr. Prateek Gupta",
     "therapistMob": "9785462130",
     "therapistArea": "226029",
-    "therapistType": "Counsellor",
+    "therapistType": "Counsellor"
 }
 {
     "therapistId": "2",
@@ -24,6 +24,6 @@
     "therapistId": "4",
     "therapistName": "Dr. Dharmendar Ji",
     "therapistMob": "9378561247",
-    "therapistArea": "226029",
-    "therapistType": "Counsellor"
+    "therapistArea": "226027",
+    "therapistType": "Psychiatrist"
 }

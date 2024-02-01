@@ -167,6 +167,75 @@ public class TherapistService implements TherapistApi {
     return result;
   }
 
+  public TherapistList getTherapistByNTA(final String nextToken, final String therapistType, final String therapistArea) {
+      log.info("Listing therapists with therapistType {} and therapistArea {}", therapistType, therapistArea);
+      Map<String, AttributeValue> expressionAttributeValues = new HashMap<>();
+      expressionAttributeValues.put(":u", AttributeValue.builder()
+            .s("Raj")
+            .build());
+  
+      QueryRequest.Builder requestBuilder = QueryRequest.builder()
+            .consistentRead(true)
+            .tableName(tableName)
+            .indexName("areaTypeIndex")
+            .keyConditionExpression("partitionKeyName = :therapistArea AND sortKeyName = :therapistType")
+            .expressionAttributeValues(expressionAttributeValues);
+
+      if (nextToken != null) {
+      try {
+        requestBuilder.exclusiveStartKey(paginationTokenSerializer.deserialize(nextToken));
+      } catch (InvalidTokenException e){System.out.println(e);} 
+      }
+
+      QueryResponse queryResponse = dynamodb.query(requestBuilder.build());
+  
+      List<TherapistSummary> therapistSummaries = queryResponse.items()
+            .stream()
+            .map(TherapistRecord::new)
+            .map(record -> modelMapper.map(record, TherapistSummary.class))
+            .collect(Collectors.toList());
+  
+      TherapistList result = new TherapistList()
+            .therapist(therapistSummaries);
+      Map<String, AttributeValue> lastEvaluatedKey = queryResponse.lastEvaluatedKey();
+      if (lastEvaluatedKey != null && !lastEvaluatedKey.isEmpty()) {
+        result.nextToken(paginationTokenSerializer.serialize(lastEvaluatedKey));
+      }
+      return result;
+    }
+
+/* 
+  public TherapistList getTherapistByNTA(final String therapistName, final String therapistType, final String therapistArea) {
+      log.info("Listing therapists with therapistName {} , therapistType {} and therapistArea {}", therapistName, therapistType, therapistArea);
+      Map<String, AttributeValue> expressionAttributeValues = new HashMap<>();
+      expressionAttributeValues.put(":u", AttributeValue.builder()
+            .s("Raj")
+            .build());
+  
+      QueryRequest.Builder requestBuilder = QueryRequest.builder()
+            .consistentRead(true)
+            .tableName(tableName)
+            .keyConditionExpression(String.format("%s = :u",
+                  TherapistRecord.USER_ID_ATTRIBUTE_NAME))
+            .expressionAttributeValues(expressionAttributeValues);
+
+      QueryResponse queryResponse = dynamodb.query(requestBuilder.build());
+  
+      List<TherapistSummary> therapistSummaries = queryResponse.items()
+            .stream()
+            .map(TherapistRecord::new)
+            .map(record -> modelMapper.map(record, TherapistSummary.class))
+            .collect(Collectors.toList());
+  
+      TherapistList result = new TherapistList()
+            .therapist(therapistSummaries);
+      Map<String, AttributeValue> lastEvaluatedKey = queryResponse.lastEvaluatedKey();
+      if (lastEvaluatedKey != null && !lastEvaluatedKey.isEmpty()) {
+        result.nextToken(paginationTokenSerializer.serialize(lastEvaluatedKey));
+      }
+      return result;
+    }
+*/
   public Therapist updateTherapist(final Therapist therapist,
                                        final String therapistId) {
     log.info("Updating therapist {} with input {}", therapistId, therapist);

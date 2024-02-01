@@ -192,6 +192,44 @@ paths:
         httpMethod: POST
         type: aws_proxy
         passthroughBehavior: never
+  /therapist/search:
+    summary: Operations on searching a therapist by therapist name, type or area
+    description: Contains the list of operations for clients to search therapists by their name, type or area
+    get:
+      tags:
+        - Therapist
+      summary: Get details of therapist name, type or area given by the client
+      description: Returns the details of the therapist name, type or area given by client
+      operationId: getTherapistByNTA
+      parameters: 
+        - name: therapistName
+          in: query
+          description: Name of therapist being searched
+          schema:
+            type: string
+        - name: therapistType
+          in: query
+          description: Type of therapist being searched
+          schema:
+            type: string
+            enum:
+              - Psychologist
+              - Psychiatrist
+              - Counsellor
+        - name: therapistArea
+          in: query
+          description: Area of therapist being searched
+          schema:
+            type: string
+      responses:
+        '211' :
+          $ref: '#/components/responses/211TherapistListResponse'
+        '4XX':
+          $ref: '#/components/responses/4XXResponse'
+        '5XX':
+          $ref: '#/components/responses/5XXResponse'
+        default:
+          description: Success
 
 components:
   schemas:

@@ -30,6 +30,10 @@ Resources:
           AttributeType: 'S'
         - AttributeName: 'therapistId'
           AttributeType: 'S'
+        - AttributeName: 'therapistArea'
+          AttributeType: 'S'
+        - AttributeName: 'therapistType'
+          AttributeType: 'S'
       KeySchema:
         - AttributeName: 'userId'
           KeyType: 'HASH'
@@ -43,6 +47,15 @@ Resources:
         SSEType: KMS
       PointInTimeRecoverySpecification:
         PointInTimeRecoveryEnabled: true
+      GlobalSecondaryIndexes:
+        - IndexName: areaTypeIndex
+          KeySchema:
+            - AttributeName: therapistArea
+              KeyType: HASH
+            - AttributeName: therapistType
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
 
   # Storing resources names to SSM
   TherapistTableName:
