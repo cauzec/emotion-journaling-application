@@ -167,8 +167,8 @@ public class TherapistService implements TherapistApi {
     return result;
   }
 
-  public TherapistList getTherapistByNTA(final String nextToken, final String therapistType, final String therapistArea) {
-      log.info("Listing therapists with therapistType {} and therapistArea {}", therapistType, therapistArea);
+  public TherapistList getTherapistByNTA(final String nextToken, final String therapistArea, final String therapistType) {
+      log.info("Listing therapists with nextToken {} , therapistArea {} and therapistType {}", nextToken, therapistArea, therapistType);
       Map<String, AttributeValue> expressionAttributeValues = new HashMap<>();
       expressionAttributeValues.put(":u", AttributeValue.builder()
             .s("Raj")

@@ -260,18 +260,27 @@
       }
     },
     "/therapist/search" : {
-      "summary" : "Operations on searching a therapist by therapist name, type or area",
-      "description" : "Contains the list of operations for clients to search therapists by their name, type or area",
+      "summary" : "Operations on searching a therapist by therapist type or area",
+      "description" : "Contains the list of operations for clients to search therapists by their type or area",
       "get" : {
         "tags" : [ "Therapist" ],
-        "summary" : "Get details of therapist name, type or area given by the client",
-        "description" : "Returns the details of the therapist name, type or area given by client",
+        "summary" : "Get details of therapist type or area given by the client",
+        "description" : "Returns the details of the therapist type or area given by client",
         "operationId" : "getTherapistByNTA",
         "parameters" : [ {
-          "name" : "therapistName",
+          "name" : "nextToken",
           "in" : "query",
-          "description" : "Name of therapist being searched",
           "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "therapistArea",
+          "in" : "query",
+          "description" : "Area of therapist being searched",
+          "required" : true,
           "style" : "form",
           "explode" : true,
           "schema" : {
@@ -281,17 +290,6 @@
           "name" : "therapistType",
           "in" : "query",
           "description" : "Type of therapist being searched",
-          "required" : false,
-          "style" : "form",
-          "explode" : true,
-          "schema" : {
-            "type" : "string",
-            "enum" : [ "Psychologist", "Psychiatrist", "Counsellor" ]
-          }
-        }, {
-          "name" : "therapistArea",
-          "in" : "query",
-          "description" : "Area of therapist being searched",
           "required" : false,
           "style" : "form",
           "explode" : true,
@@ -319,6 +317,14 @@
           "default" : {
             "description" : "Success"
           }
+        },
+        "x-amazon-apigateway-integration" : {
+          "uri" : {
+            "Fn::Sub" : "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ApiLambda.Arn}:live/invocations"
+          },
+          "httpMethod" : "POST",
+          "type" : "aws_proxy",
+          "passthroughBehavior" : "never"
         }
       }
     }

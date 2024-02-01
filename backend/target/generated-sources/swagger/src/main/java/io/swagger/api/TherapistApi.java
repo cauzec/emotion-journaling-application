@@ -22,7 +22,7 @@ import javax.validation.Valid;
 
 @Path("/therapist")
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJAXRSSpecServerCodegen", date = "2024-02-01T15:15:42.261+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJAXRSSpecServerCodegen", date = "2024-02-01T15:58:22.193+05:30[Asia/Calcutta]")
 public interface TherapistApi {
 
     @POST
@@ -63,21 +63,21 @@ public interface TherapistApi {
     @GET
     @Path("/search")
     @Produces({ "application/json" })
-    @Operation(summary = "Get details of therapist name, type or area given by the client", description = "Returns the details of the therapist name, type or area given by client", tags={ "Therapist" })
+    @Operation(summary = "Get details of therapist type or area given by the client", description = "Returns the details of the therapist type or area given by client", tags={ "Therapist" })
     @ApiResponses(value = { 
         @ApiResponse(responseCode = "211", description = "Successfully returned a list of therapists", content = @Content(schema = @Schema(implementation = TherapistList.class))),
         @ApiResponse(responseCode = "4XX", description = ""),
         @ApiResponse(responseCode = "5XX", description = ""),
         @ApiResponse(responseCode = "200", description = "Success") })
-    TherapistList getTherapistByNTA(  @QueryParam("therapistName") 
+    TherapistList getTherapistByNTA( @NotNull  @QueryParam("therapistArea") 
 
- @Parameter(description = "Name of therapist being searched")  String therapistName
+ @Parameter(description = "Area of therapist being searched")  String therapistArea
+,  @QueryParam("nextToken") 
+
+  String nextToken
 ,  @QueryParam("therapistType") 
 
  @Parameter(description = "Type of therapist being searched")  String therapistType
-,  @QueryParam("therapistArea") 
-
- @Parameter(description = "Area of therapist being searched")  String therapistArea
 );
     @GET
     @Produces({ "application/json" })
