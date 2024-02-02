@@ -202,15 +202,15 @@ paths:
       description: Returns the details of the therapist type or area given by client
       operationId: getTherapistByNTA
       parameters: 
-        - name: nextToken
-          in: query
-          required: false
-          schema:
-            type: string
         - name: therapistArea
           in: query
           description: Area of therapist being searched
           required: true
+          schema:
+            type: string
+        - name: nextToken
+          in: query
+          required: false
           schema:
             type: string
         - name: therapistType

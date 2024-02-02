@@ -5,6 +5,7 @@
     "therapistArea": "226029",
     "therapistType": "Counsellor"
 }
+
 {
     "therapistId": "2",
     "therapistName": "Dr. Anurag Gupta",
@@ -20,6 +21,7 @@
     "therapistArea": "226029",
     "therapistType": "Counsellor"
 }
+
 {
     "therapistId": "4",
     "therapistName": "Dr. Dharmendar Ji",

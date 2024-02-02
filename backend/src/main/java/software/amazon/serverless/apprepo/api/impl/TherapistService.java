@@ -167,18 +167,20 @@ public class TherapistService implements TherapistApi {
     return result;
   }
 
-  public TherapistList getTherapistByNTA(final String nextToken, final String therapistArea, final String therapistType) {
-      log.info("Listing therapists with nextToken {} , therapistArea {} and therapistType {}", nextToken, therapistArea, therapistType);
+  public TherapistList getTherapistByNTA(final String therapistArea, final String nextToken, final String therapistType) {
+      log.info("Listing therapists with therapistArea {} , nextToken {} and therapistType {}", therapistArea, nextToken, therapistType);
       Map<String, AttributeValue> expressionAttributeValues = new HashMap<>();
-      expressionAttributeValues.put(":u", AttributeValue.builder()
-            .s("Raj")
+      expressionAttributeValues.put(":therapistAreaValue", AttributeValue.builder()
+            .s(therapistArea)
+            .build());
+      expressionAttributeValues.put(":therapistTypeValue", AttributeValue.builder()
+            .s(therapistType)
             .build());
   
       QueryRequest.Builder requestBuilder = QueryRequest.builder()
-            .consistentRead(true)
             .tableName(tableName)
             .indexName("areaTypeIndex")
-            .keyConditionExpression("partitionKeyName = :therapistArea AND sortKeyName = :therapistType")
+            .keyConditionExpression("therapistArea = :therapistAreaValue AND therapistType = :therapistTypeValue")
             .expressionAttributeValues(expressionAttributeValues);
 
       if (nextToken != null) {
