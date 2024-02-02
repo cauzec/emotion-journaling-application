@@ -265,9 +265,9 @@ components:
         therapistType:
           type: string
           description: Type of the therapist
-      required: 
+      required:
+        - therapistId
         - therapistName
-        - therapistMob
         - therapistArea
         - therapistType
       example: 

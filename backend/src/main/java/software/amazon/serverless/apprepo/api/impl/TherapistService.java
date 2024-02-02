@@ -292,6 +292,7 @@ public class TherapistService implements TherapistApi {
     TherapistRecord therapistRecord = loadTherapist(therapistId);
     Map<String, AttributeValue> expressionAttributeValues = new HashMap<>();
     String therapistName = therapist.getTherapistName();
+    String therapistMob = therapist.getTherapistMob();
     String therapistType = therapist.getTherapistType();
     String therapistArea = therapist.getTherapistArea();
     List<String> updateExpressionList = new ArrayList<>();
@@ -301,16 +302,22 @@ public class TherapistService implements TherapistApi {
       updateExpressionList.add(String.format("%s = :a",
             TherapistRecord.THERAPIST_NAME_ATTRIBUTE_NAME));
     }
+    if (therapistMob != null) {
+      therapistRecord.setTherapistMob(therapistMob);
+      expressionAttributeValues.put(":d", AttributeValue.builder().s(therapistMob).build());
+      updateExpressionList.add(String.format("%s = :d",
+              TherapistRecord.THERAPIST_MOBILE_ATTRIBUTE_NAME));
+    }
     if (therapistType != null) {
       therapistRecord.setTherapistType(therapistType);
-      expressionAttributeValues.put(":d", AttributeValue.builder().s(therapistType).build());
-      updateExpressionList.add(String.format("%s = :d",
+      expressionAttributeValues.put(":h", AttributeValue.builder().s(therapistType).build());
+      updateExpressionList.add(String.format("%s = :h",
             TherapistRecord.THERAPIST_TYPE_ATTRIBUTE_NAME));
     }
     if (therapistArea != null) {
       therapistRecord.setTherapistArea(therapistArea);
-      expressionAttributeValues.put(":h", AttributeValue.builder().s(therapistArea).build());
-      updateExpressionList.add(String.format("%s = :h",
+      expressionAttributeValues.put(":l", AttributeValue.builder().s(therapistArea).build());
+      updateExpressionList.add(String.format("%s = :l",
             TherapistRecord.THERAPIST_AREA_ATTRIBUTE_NAME));
     }
 

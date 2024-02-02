@@ -29,3 +29,27 @@
     "therapistArea": "226027",
     "therapistType": "Psychiatrist"
 }
+
+{
+    "therapistId": "5",
+    "therapistName": "Dr. Steve Sebastian",
+    "therapistMob": "7695842179",
+    "therapistArea": "226029",
+    "therapistType": "Psychiatrist"
+}
+
+{
+    "therapistId": "6",
+    "therapistName": "Dr. Jasjot Singh",
+    "therapistMob": "9786451893",
+    "therapistArea": "560074",
+    "therapistType": "Psychologist"
+}
+
+{
+    "therapistId": "7",
+    "therapistName": "Dr. Rajeev",
+    "therapistMob": null,
+    "therapistArea": "650047",
+    "therapistType": "Psychologist"
+}
