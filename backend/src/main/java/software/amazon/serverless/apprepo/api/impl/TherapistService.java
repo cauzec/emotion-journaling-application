@@ -169,6 +169,85 @@ public class TherapistService implements TherapistApi {
 
   public TherapistList getTherapistByNTA(final String therapistArea, final String nextToken, final String therapistType) {
       log.info("Listing therapists with therapistArea {} , nextToken {} and therapistType {}", therapistArea, nextToken, therapistType);
+
+      if (therapistType == null)
+      {
+        Map<String, AttributeValue> expressionAttributeValues = new HashMap<>();
+        expressionAttributeValues.put(":therapistAreaValue", AttributeValue.builder()
+                .s(therapistArea)
+                .build());
+
+        QueryRequest.Builder requestBuilder = QueryRequest.builder()
+                .tableName(tableName)
+                .indexName("areaTypeIndex")
+                .keyConditionExpression("therapistArea = :therapistAreaValue")
+                .expressionAttributeValues(expressionAttributeValues);
+
+        if (nextToken != null) {
+          try {
+            requestBuilder.exclusiveStartKey(paginationTokenSerializer.deserialize(nextToken));
+          } catch (InvalidTokenException e){System.out.println(e);}
+        }
+
+        QueryResponse queryResponse = dynamodb.query(requestBuilder.build());
+
+        List<TherapistSummary> therapistSummaries = queryResponse.items()
+                .stream()
+                .map(TherapistRecord::new)
+                .map(record -> modelMapper.map(record, TherapistSummary.class))
+                .collect(Collectors.toList());
+
+        TherapistList result = new TherapistList()
+                .therapist(therapistSummaries);
+        Map<String, AttributeValue> lastEvaluatedKey = queryResponse.lastEvaluatedKey();
+        if (lastEvaluatedKey != null && !lastEvaluatedKey.isEmpty()) {
+          result.nextToken(paginationTokenSerializer.serialize(lastEvaluatedKey));
+        }
+        return result;
+      }
+      else
+      {
+        Map<String, AttributeValue> expressionAttributeValues = new HashMap<>();
+        expressionAttributeValues.put(":therapistAreaValue", AttributeValue.builder()
+                .s(therapistArea)
+                .build());
+        expressionAttributeValues.put(":therapistTypeValue", AttributeValue.builder()
+                .s(therapistType)
+                .build());
+
+        QueryRequest.Builder requestBuilder = QueryRequest.builder()
+                .tableName(tableName)
+                .indexName("areaTypeIndex")
+                .keyConditionExpression("therapistArea = :therapistAreaValue AND therapistType = :therapistTypeValue")
+                .expressionAttributeValues(expressionAttributeValues);
+
+        if (nextToken != null) {
+          try {
+            requestBuilder.exclusiveStartKey(paginationTokenSerializer.deserialize(nextToken));
+          } catch (InvalidTokenException e){System.out.println(e);}
+        }
+
+        QueryResponse queryResponse = dynamodb.query(requestBuilder.build());
+
+        List<TherapistSummary> therapistSummaries = queryResponse.items()
+                .stream()
+                .map(TherapistRecord::new)
+                .map(record -> modelMapper.map(record, TherapistSummary.class))
+                .collect(Collectors.toList());
+
+        TherapistList result = new TherapistList()
+                .therapist(therapistSummaries);
+        Map<String, AttributeValue> lastEvaluatedKey = queryResponse.lastEvaluatedKey();
+        if (lastEvaluatedKey != null && !lastEvaluatedKey.isEmpty()) {
+          result.nextToken(paginationTokenSerializer.serialize(lastEvaluatedKey));
+        }
+        return result;
+      }
+    }
+
+/* 
+  public TherapistList getTherapistByNTA(final String therapistArea, final String nextToken, final String therapistType) {
+      log.info("Listing therapists with therapistArea {} , nextToken {} and therapistType {}", therapistArea, nextToken, therapistType);
       Map<String, AttributeValue> expressionAttributeValues = new HashMap<>();
       expressionAttributeValues.put(":therapistAreaValue", AttributeValue.builder()
             .s(therapistArea)
@@ -176,7 +255,7 @@ public class TherapistService implements TherapistApi {
       expressionAttributeValues.put(":therapistTypeValue", AttributeValue.builder()
             .s(therapistType)
             .build());
-  
+
       QueryRequest.Builder requestBuilder = QueryRequest.builder()
             .tableName(tableName)
             .indexName("areaTypeIndex")
@@ -186,40 +265,8 @@ public class TherapistService implements TherapistApi {
       if (nextToken != null) {
       try {
         requestBuilder.exclusiveStartKey(paginationTokenSerializer.deserialize(nextToken));
-      } catch (InvalidTokenException e){System.out.println(e);} 
+      } catch (InvalidTokenException e){System.out.println(e);}
       }
-
-      QueryResponse queryResponse = dynamodb.query(requestBuilder.build());
-  
-      List<TherapistSummary> therapistSummaries = queryResponse.items()
-            .stream()
-            .map(TherapistRecord::new)
-            .map(record -> modelMapper.map(record, TherapistSummary.class))
-            .collect(Collectors.toList());
-  
-      TherapistList result = new TherapistList()
-            .therapist(therapistSummaries);
-      Map<String, AttributeValue> lastEvaluatedKey = queryResponse.lastEvaluatedKey();
-      if (lastEvaluatedKey != null && !lastEvaluatedKey.isEmpty()) {
-        result.nextToken(paginationTokenSerializer.serialize(lastEvaluatedKey));
-      }
-      return result;
-    }
-
-/* 
-  public TherapistList getTherapistByNTA(final String therapistName, final String therapistType, final String therapistArea) {
-      log.info("Listing therapists with therapistName {} , therapistType {} and therapistArea {}", therapistName, therapistType, therapistArea);
-      Map<String, AttributeValue> expressionAttributeValues = new HashMap<>();
-      expressionAttributeValues.put(":u", AttributeValue.builder()
-            .s("Raj")
-            .build());
-  
-      QueryRequest.Builder requestBuilder = QueryRequest.builder()
-            .consistentRead(true)
-            .tableName(tableName)
-            .keyConditionExpression(String.format("%s = :u",
-                  TherapistRecord.USER_ID_ATTRIBUTE_NAME))
-            .expressionAttributeValues(expressionAttributeValues);
 
       QueryResponse queryResponse = dynamodb.query(requestBuilder.build());
   
