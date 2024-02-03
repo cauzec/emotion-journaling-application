@@ -7,10 +7,7 @@ import io.swagger.model.TherapistSummary;
 
 import java.time.Clock;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.ws.rs.BadRequestException;
@@ -96,6 +93,8 @@ public class TherapistService implements TherapistApi {
     log.info("Creating therapist with input {}", therapist);
     TherapistRecord therapistRecord = modelMapper.map(therapist,
           TherapistRecord.class);
+    String id = UUID.randomUUID().toString();
+    therapistRecord.setTherapistId(id);
     therapistRecord.setCreatedAt(Instant.now(clock));
     therapistRecord.setVersion(1L);
     therapistRecord.setUserId("Raj");
@@ -347,6 +346,9 @@ public class TherapistService implements TherapistApi {
           .consistentRead(Boolean.TRUE)
           .key(toKeyRecord(therapistId))
           .build()).item();
+    if (therapistMap.isEmpty()) {
+      throw new IllegalArgumentException(String.format("therapistId:%s not found", therapistId));
+    }
     return new TherapistRecord(therapistMap);
   }
 
