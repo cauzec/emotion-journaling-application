@@ -266,7 +266,6 @@ components:
           type: string
           description: Type of the therapist
       required:
-        - therapistId
         - therapistName
         - therapistArea
         - therapistType
