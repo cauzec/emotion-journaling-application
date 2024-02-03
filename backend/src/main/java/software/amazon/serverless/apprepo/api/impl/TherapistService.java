@@ -4,13 +4,18 @@ import io.swagger.api.TherapistApi;
 import io.swagger.model.Therapist;
 import io.swagger.model.TherapistList;
 import io.swagger.model.TherapistSummary;
+import io.swagger.model.BadRequestException;
+import io.swagger.model.ConflictException;
+import io.swagger.model.InternalServerErrorException;
+import io.swagger.model.NotFoundException;
+import io.swagger.model.TooManyRequestsException;
+import io.swagger.model.UnauthorizedException;
 
 import java.time.Clock;
 import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
-import javax.ws.rs.BadRequestException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.SecurityContext;
 
@@ -30,6 +35,11 @@ import software.amazon.awssdk.services.dynamodb.model.PutItemRequest;
 import software.amazon.awssdk.services.dynamodb.model.QueryRequest;
 import software.amazon.awssdk.services.dynamodb.model.QueryResponse;
 import software.amazon.awssdk.services.dynamodb.model.UpdateItemRequest;
+
+import software.amazon.serverless.apprepo.api.exception.BadRequestApiException;
+import software.amazon.serverless.apprepo.api.exception.ConflictApiException;
+import software.amazon.serverless.apprepo.api.exception.NotFoundApiException;
+import software.amazon.serverless.apprepo.api.exception.InternalServerApiException;
 import software.amazon.serverless.apprepo.api.impl.pagination.InvalidTokenException;
 import software.amazon.serverless.apprepo.api.impl.pagination.TokenSerializer;
 import software.amazon.serverless.apprepo.container.config.ConfigProvider;
@@ -99,7 +109,9 @@ public class TherapistService implements TherapistApi {
     therapistRecord.setCreatedAt(Instant.now(clock));
     therapistRecord.setVersion(1L);
     therapistRecord.setUserId("Raj");
-    dynamodb.putItem(PutItemRequest.builder()
+
+    try {
+      dynamodb.putItem(PutItemRequest.builder()
             .tableName(tableName)
             .item(therapistRecord.toAttributeMap())
             .conditionExpression(
@@ -107,6 +119,13 @@ public class TherapistService implements TherapistApi {
                         TherapistRecord.USER_ID_ATTRIBUTE_NAME,
                         TherapistRecord.THERAPIST_ID_ATTRIBUTE_NAME))
             .build());
+    } catch (ConditionalCheckFailedException e) {
+      throw new ConflictApiException(new ConflictException()
+            .errorCode("TherapistAlreadyExist")
+            .message(String.format("Therapist %s already exists.",
+            therapist.getTherapistId())));
+    }
+    
     return modelMapper.map(therapistRecord, Therapist.class);
   }
 
@@ -148,7 +167,11 @@ public class TherapistService implements TherapistApi {
     if (nextToken != null) {
       try {
         requestBuilder.exclusiveStartKey(paginationTokenSerializer.deserialize(nextToken));
-      } catch (InvalidTokenException e){System.out.println(e);} 
+      } catch (InvalidTokenException e) {
+        throw new BadRequestApiException(new BadRequestException()
+              .errorCode("InvalidRequest")
+              .message(String.format("NextToken %s is invalid.", nextToken)));
+      }
     }
     QueryResponse queryResponse = dynamodb.query(requestBuilder.build());
 
@@ -186,7 +209,11 @@ public class TherapistService implements TherapistApi {
         if (nextToken != null) {
           try {
             requestBuilder.exclusiveStartKey(paginationTokenSerializer.deserialize(nextToken));
-          } catch (InvalidTokenException e){System.out.println(e);}
+          } catch (InvalidTokenException e) {
+            throw new BadRequestApiException(new BadRequestException()
+                  .errorCode("InvalidRequest")
+                  .message(String.format("NextToken %s is invalid.", nextToken)));
+          }
         }
 
         QueryResponse queryResponse = dynamodb.query(requestBuilder.build());
@@ -224,7 +251,11 @@ public class TherapistService implements TherapistApi {
         if (nextToken != null) {
           try {
             requestBuilder.exclusiveStartKey(paginationTokenSerializer.deserialize(nextToken));
-          } catch (InvalidTokenException e){System.out.println(e);}
+          } catch (InvalidTokenException e) {
+            throw new BadRequestApiException(new BadRequestException()
+                  .errorCode("InvalidRequest")
+                  .message(String.format("NextToken %s is invalid.", nextToken)));
+          }
         }
 
         QueryResponse queryResponse = dynamodb.query(requestBuilder.build());
@@ -288,6 +319,14 @@ public class TherapistService implements TherapistApi {
   public Therapist updateTherapist(final Therapist therapist,
                                        final String therapistId) {
     log.info("Updating therapist {} with input {}", therapistId, therapist);
+    if (therapist.getTherapistName() == null
+          && therapist.getTherapistMob() == null
+          && therapist.getTherapistType() == null
+          && therapist.getTherapistArea() == null) {
+      throw new BadRequestApiException(new BadRequestException()
+            .errorCode("InvalidRequest")
+            .message("No update is present."));
+    }
 
     TherapistRecord therapistRecord = loadTherapist(therapistId);
     Map<String, AttributeValue> expressionAttributeValues = new HashMap<>();
@@ -348,7 +387,9 @@ public class TherapistService implements TherapistApi {
           .key(toKeyRecord(therapistId))
           .build()).item();
     if (therapistMap.isEmpty()) {
-      throw new IllegalArgumentException(String.format("therapistId:%s not found", therapistId));
+      throw new NotFoundApiException(new NotFoundException()
+            .errorCode("TherapistNotFound")
+            .message(String.format("Therapist %s can not be found.", therapistId)));
     }
     return new TherapistRecord(therapistMap);
   }

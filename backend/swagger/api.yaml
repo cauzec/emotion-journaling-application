@@ -51,10 +51,26 @@ paths:
             minimum: 1
             maximum: 100
       responses:
-        '211' :
-          $ref: '#/components/responses/211TherapistListResponse'
-        '400':
-          $ref: '#/components/responses/400Response'
+        '200' :
+          $ref: '#/components/responses/200TherapistListResponse'
+        "400":
+          description: "Bad Request Exception"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "401":
+          description: "Unauthorized Exception"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedException"
+        "429":
+          description: "Too Many Requests Exception"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyRequestsException"
         '500':
           $ref: '#/components/responses/500Response'
         default:
@@ -72,16 +88,32 @@ paths:
       description: Adds a new therapist and returns the added therapist
       operationId: addTherapist
       responses:
-        '202' :
-          $ref: '#/components/responses/202TherapistResponse'
+        '201' :
+          $ref: '#/components/responses/200TherapistResponse'
         '400':
           description: "Bad Request Exception"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/BadRequestException"
-        '400':
-          $ref: '#/components/responses/400Response'
+        "401":
+          description: "Unauthorized Exception"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedException"
+        "409":
+          description: "Conflict Exception"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConflictException"
+        "429":
+          description: "Too Many Requests Exception"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyRequestsException"
         '500':
           $ref: '#/components/responses/500Response'
         default:
@@ -115,10 +147,32 @@ paths:
           schema:
             type: string
       responses:
-        '202' :
-          $ref: '#/components/responses/202TherapistResponse'
-        '400':
-          $ref: '#/components/responses/400Response'
+        '200' :
+          $ref: '#/components/responses/200TherapistResponse'
+        "400":
+          description: "Bad Request Exception"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "401":
+          description: "Unauthorized Exception"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedException"
+        "404":
+          description: "Not Found Exception"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "429":
+          description: "Too Many Requests Exception"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyRequestsException"
         '500':
           $ref: '#/components/responses/500Response'
         default:
@@ -143,10 +197,32 @@ paths:
           schema:
             type: string
       responses:
-        '202' :
-          $ref: '#/components/responses/202TherapistResponse'
-        '400':
-          $ref: '#/components/responses/400Response'
+        '200' :
+          $ref: '#/components/responses/200TherapistResponse'
+        "400":
+          description: "Bad Request Exception"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "401":
+          description: "Unauthorized Exception"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedException"
+        "404":
+          description: "Not Found Exception"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "429":
+          description: "Too Many Requests Exception"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyRequestsException"
         '500':
           $ref: '#/components/responses/500Response'
         default:
@@ -178,10 +254,32 @@ paths:
           schema:
             type: string
       responses:
-        '202' :
+        '204' :
           description: "Successfully delete an application"
-        '400':
-          $ref: '#/components/responses/400Response'
+        "400":
+          description: "Bad Request Exception"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "401":
+          description: "Unauthorized Exception"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedException"
+        "404":
+          description: "Not Found Exception"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "429":
+          description: "Too Many Requests Exception"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyRequestsException"
         '500':
           $ref: '#/components/responses/500Response'
         default:
@@ -220,12 +318,28 @@ paths:
           schema:
             type: string
       responses:
-        '211' :
-          $ref: '#/components/responses/211TherapistListResponse'
-        '4XX':
-          $ref: '#/components/responses/4XXResponse'
-        '5XX':
-          $ref: '#/components/responses/5XXResponse'
+        '200' :
+          $ref: '#/components/responses/200TherapistListResponse'
+        "400":
+          description: "Bad Request Exception"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "401":
+          description: "Unauthorized Exception"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedException"
+        "429":
+          description: "Too Many Requests Exception"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyRequestsException"
+        '500':
+          $ref: '#/components/responses/500Response'
         default:
           description: Success
       x-amazon-apigateway-integration:
@@ -238,6 +352,41 @@ paths:
 components:
   schemas:
     BadRequestException:
+      type: object
+      properties:
+        message:
+          type: string
+        errorCode:
+          type: string
+    UnauthorizedException:
+      type: object
+      properties:
+        message:
+          type: string
+        errorCode:
+          type: string
+    NotFoundException:
+      type: object
+      properties:
+        message:
+          type: string
+        errorCode:
+          type: string
+    ConflictException:
+      type: object
+      properties:
+        message:
+          type: string
+        errorCode:
+          type: string
+    TooManyRequestsException:
+      type: object
+      properties:
+        message:
+          type: string
+        errorCode:
+          type: string
+    InternalServerErrorException:
       type: object
       properties:
         message:
@@ -321,31 +470,19 @@ components:
   responses:
     200Response:
       description: Success
-    201UserResponse:
-      description: Successfully added a user
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Login'
-    202TherapistResponse:
+    200TherapistResponse:
       description: Successfully added a therapist
       content: 
         application/json:
           schema:
             $ref: '#/components/schemas/Therapist'
-    211TherapistListResponse:
+    200TherapistListResponse:
       description: Successfully returned a list of therapists
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/TherapistList'
     400Response:
-      description: "Bad Request Exception"
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/BadRequestException"
-    400Response:
-      description: Bad Request
+      description: Bad Request Error
     500Response:
       description: Internal Server Error
