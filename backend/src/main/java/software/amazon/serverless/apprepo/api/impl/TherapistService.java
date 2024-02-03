@@ -93,6 +93,7 @@ public class TherapistService implements TherapistApi {
     log.info("Creating therapist with input {}", therapist);
     TherapistRecord therapistRecord = modelMapper.map(therapist,
           TherapistRecord.class);
+
     String id = UUID.randomUUID().toString();
     therapistRecord.setTherapistId(id);
     therapistRecord.setCreatedAt(Instant.now(clock));
