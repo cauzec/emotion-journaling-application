@@ -1,5 +1,4 @@
 {
-    "therapistId": "1",
     "therapistName": "Dr. Prateek Gupta",
     "therapistMob": "9785462130",
     "therapistArea": "226029",
@@ -7,7 +6,6 @@
 }
 
 {
-    "therapistId": "2",
     "therapistName": "Dr. Anurag Gupta",
     "therapistMob": "9785462130",
     "therapistArea": "560047",
@@ -15,7 +13,6 @@
 }
 
 {
-    "therapistId": "3",
     "therapistName": "Dr. Raj Mishra",
     "therapistMob": "9378561247",
     "therapistArea": "226029",
@@ -23,7 +20,6 @@
 }
 
 {
-    "therapistId": "4",
     "therapistName": "Dr. Dharmendar Ji",
     "therapistMob": "9378561247",
     "therapistArea": "226027",
@@ -31,7 +27,6 @@
 }
 
 {
-    "therapistId": "5",
     "therapistName": "Dr. Steve Sebastian",
     "therapistMob": "7695842179",
     "therapistArea": "226029",
@@ -39,7 +34,6 @@
 }
 
 {
-    "therapistId": "6",
     "therapistName": "Dr. Jasjot Singh",
     "therapistMob": "9786451893",
     "therapistArea": "560074",
@@ -47,7 +41,6 @@
 }
 
 {
-    "therapistId": "7",
     "therapistName": "Dr. Rajeev",
     "therapistMob": null,
     "therapistArea": "650047",

@@ -81,6 +81,8 @@ paths:
         httpMethod: POST
         type: aws_proxy
         passthroughBehavior: never
+      security:
+        - cognitoAuthorizer: []
     post:
       tags:
         - Therapist
@@ -130,6 +132,8 @@ paths:
         httpMethod: POST
         type: aws_proxy
         passthroughBehavior: never
+      security:
+        - cognitoAuthorizer: []
   /therapist/{therapistId}:
     summary: Operations on a particular therapist
     description: Contains the list of operations on a therapist given in the therapistId
@@ -183,6 +187,8 @@ paths:
         httpMethod: POST
         type: aws_proxy
         passthroughBehavior: never
+      security:
+        - cognitoAuthorizer: []
     put:
       tags:
         - Therapist
@@ -240,6 +246,8 @@ paths:
         httpMethod: POST
         type: aws_proxy
         passthroughBehavior: never
+      security:
+        - cognitoAuthorizer: []
     delete:
       tags:
         - Therapist
@@ -290,6 +298,8 @@ paths:
         httpMethod: POST
         type: aws_proxy
         passthroughBehavior: never
+      security:
+        - cognitoAuthorizer: []
   /therapist/search:
     summary: Operations on searching a therapist by therapist type or area
     description: Contains the list of operations for clients to search therapists by their type or area
@@ -348,8 +358,20 @@ paths:
         httpMethod: POST
         type: aws_proxy
         passthroughBehavior: never
+      security:
+        - cognitoAuthorizer: []
 
 components:
+  securitySchemes:
+    cognitoAuthorizer:
+      type: apiKey
+      name: Authorization
+      in: header
+      x-amazon-apigateway-authtype: cognito_user_pools
+      x-amazon-apigateway-authorizer:
+        providerARNs:
+          - Fn::GetAtt: TherapistApiUserPool.Arn
+        type: cognito_user_pools
   schemas:
     BadRequestException:
       type: object
