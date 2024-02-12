@@ -203,6 +203,8 @@ public class TherapistService implements TherapistApi {
           .build());
   }
 
+  // The same methods are used in the following code and the explanation remains the same.
+
   public Therapist getTherapist(String therapistId) {
     log.info("Getting therapist {}", therapistId);
     TherapistRecord therapistRecord = loadTherapist(therapistId);
