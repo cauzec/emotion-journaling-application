@@ -180,7 +180,7 @@ public class TherapistService implements TherapistApi {
     }
     
     return modelMapper.map(therapistRecord, Therapist.class);
-    // Now we have to return a therapist type model for the API response and we used database model of type TherapistRecord
+    // Now we have to return a therapist type model for the API response and we used database model of type TherapistRecord,
     // so we again change it back to therapist type from TherapistRecord for API as we are returning a Therapist type object in this method.
   }
 
